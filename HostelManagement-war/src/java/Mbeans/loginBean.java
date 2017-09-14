@@ -47,14 +47,14 @@ public class loginBean {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
                 session.setAttribute("username", username);
-                return "home.xhtml";
+                return "home.xhtml?faces-redirect=true";
             } else {
                 FacesContext.getCurrentInstance().addMessage(
                         null,
                         new FacesMessage(FacesMessage.SEVERITY_WARN,
                                 "Incorrect Passowrd",
                                 "Please enter correct username and Password"));
-                redirect = "index.xhtml";
+                redirect = "index.xhtml?faces-redirect=true";
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(
@@ -62,7 +62,7 @@ public class loginBean {
                     new FacesMessage(FacesMessage.SEVERITY_WARN,
                             "Invalid username",
                             "Please enter correct username and Password"));
-            redirect = "index.xhtml";
+            redirect = "index.xhtml?faces-redirect=true";
         }
         return redirect;
     }

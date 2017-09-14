@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+        <link href="resource/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="resource/css/demo.css" rel="stylesheet" type="text/css"/>
+    </h:head>
+
+    <h:body>
+        <div id="register-panel">
+
+            <h:form id="regForm">
+
+                <h:panelGrid id="registerGrid" columns="3" cellspacing="1">
+
+                    <h:commandButton value="Back to Login" action="index.xhtml?faces-redirect=true" immediate="true" />
+                    <p:column/> <p:column/>
+
+                    <p:outputLabel for="username" value="Username: " />
+                    <p:inputText id="username" required="true" value="#{accountBean.username}"/>
+                    <p:message id="usernameError" for="username" />
+
+                    <p:outputLabel for="password" value="Password: " />
+                    <p:password id="password" required="true" value="#{accountBean.password}"/>
+                    <p:message for="password" display="icon"/>
+
+                    <p:outputLabel for="ICNo" value="IC Number: " />
+                    <p:inputMask id="ICNo" required="true" value="#{accountBean.IC}" mask="999999-99-9999"/>
+                    <p:message for="ICNo" display="icon"/>
+
+                    <p:outputLabel for="phone" value="Phone: " />
+                    <p:inputMask id="phone" required="true" value="#{accountBean.phoneNo}" mask="(999) 999-9999"/>
+                    <p:message for="phone" display="icon"/>
+
+                    <p:outputLabel for="address" value="Address: " />
+                    <p:inputText id="address" required="true" value="#{accountBean.address}"/>
+                    <p:message for="address" display="icon" />
+
+                    <p:outputLabel for="email" value="Email: " />
+                    <p:inputText id="email" required="true" label="email"
+                                 requiredMessage="Please enter your email address."
+                                 validatorMessage="Invalid email format"
+                                 value="#{accountBean.email}">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="email" />
+
+                    <p:outputLabel for="department" value="Department: " />
+                    <p:selectOneMenu id ="department" value="#{accountBean.department}">
+                        <f:selectItem itemValue="" itemLabel="-"/>
+                        <f:selectItem itemValue="manager" itemLabel="Manager" />
+                        <f:selectItem itemValue="receptionist" itemLabel="Receptionist" />
+                        <f:selectItem itemValue="cleaner" itemLabel="Cleaning Staff" />
+                    </p:selectOneMenu>
+                    <p:message for="department" display="icon"/>
+
+                    <p:commandButton value="Reset" type="reset" />
+
+                    <p:commandButton value="Submit" action="#{accountBean.register}" update="registerGrid" style="float:right;"/>
+
+                    <p:messages id="messages"/>
+                </h:panelGrid>
+
+
+
+                <!-- private String username;
+                     private String password;
+                     private String email;
+                     private String department;
+                     private String phoneNo;
+                     private String IC;
+                     private String address;-->
+
+            </h:form>
+
+        </div>
+    </h:body>
+</html>
+

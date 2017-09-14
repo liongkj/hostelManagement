@@ -7,7 +7,6 @@
     <h:head>
         <title>APU Hostel</title>
         <link rel='stylesheet' type="text/css" href="resource/css/style.css"/>
-        <link rel='stylesheet' type="text/css" href="resource/css/style.css"/>
         <link rel='stylesheet' type="text/css" href="resource/css/demo.css"/>
     </h:head>
     <h:body>
@@ -29,6 +28,11 @@
                             <h:commandButton value="Log In" action="#{loginBean.login()}"/>
                         </td>
 
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:commandLink value="Register new User" action="registerStaff.xhtml?faces-redirect=true" immediate="true"/>
+                        </td>
                     </tr>
                 </table>
 

@@ -12,11 +12,11 @@ and open the template in the editor.
                 font-family: "Tohoma";
                 
             }
-            #login-panel{
-                width : 400px;
+            #login-panel , #roles-panel, #register-panel{
+                width : 500px;
                 margin: 50px auto;
             }
-            #login-panel table{
+            #login-panel table, #register-panel table{
                 border:1px solid #DDD;
                 padding: 50px;
                 border-radius:3px;
@@ -24,12 +24,13 @@ and open the template in the editor.
             :focus{
                 outline:none;
             }
-            #login-panel input[type='text'],#login-panel input[type='password']{
+            
+            #login-panel input[type='text'],#login-panel input[type='password'], #register-panel input[type='password'],#register-panel input[type='text']{
                 border: 1px solid #DDD;
                 padding: 3px;
                 border-radius:3px;
             }
-            #login-panel input[type='submit']{
+            #login-panel input[type='submit'], #register-panel input[type='submit']{
                 border: 1px solid #DDD;
                 width:100%;
                 padding:5px;
@@ -40,6 +41,6 @@ and open the template in the editor.
                 background-color:activeborder;
                 cursor: pointer;
             }
-            #login-panel input[type='submit'] active{
+            #login-panel input[type='submit'] active ,#register-panel input[type='submit'] active{
                 background-color: #ececec;                
             }

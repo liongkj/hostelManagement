@@ -1,7 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
     <h:head>
         <title>Facelet Title</title>
         <link rel="stylesheet" href="resource/css/demo.css"/>
@@ -9,31 +11,32 @@
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'/>
     </h:head>
     <h:body>
-        <header class="header-user-dropdown">
+        <h:form>
+            <header class="header-user-dropdown">
 
-            <div class="header-limiter">
-                <h1><a href="#">Company<span>logo</span></a></h1>
+                <div class="header-limiter">
+                    <h1><a href="#">Company<span>logo</span></a></h1>
 
-                <nav>
-                    <a href="#">Overview</a>
-                    <a href="#">Reports</a>
-                    <a href="#">Roles</a>
-                </nav>
+                    <nav>
+                        <a href="#">Overview</a>
+                        <h:commandLink value="Roles" action="roles.xhtml"/>
+                        <a href="#">Reports</a>
+                    </nav>
 
 
-                <div class="header-user-menu">
-                    <img src="resource/img/usericon.png" alt=""/>
+                    <div class="header-user-menu">
+                        <img src="resource/img/usericon.png" alt=""/>
 
-                    <ul>
-                        <li><a href="#">Edit Profile</a></li>
-                        <li><a href="#{loginBean.logout()}" class="highlight">Logout</a></li>
-                    </ul>
+                        <ul>
+                            <li><a href="#">Edit Profile</a></li>
+                            <li><a href="#{loginBean.logout()}" class="highlight">Logout</a></li>
+                        </ul>
+                    </div>
+
                 </div>
 
-            </div>
-            
-        </header>
-
+            </header>
+        </h:form>
         <!-- The content of your page would go here. -->
 
 
@@ -66,9 +69,7 @@
             });
 
         </script>
-
-
-
     </h:body>
+
 </html>
 
