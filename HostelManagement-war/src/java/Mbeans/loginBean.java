@@ -43,29 +43,30 @@ public class loginBean {
                 loguser = ul.get(i);
             }
         }
-
+        FacesContext facesContext = FacesContext.getCurrentInstance();
         if (loguser != null) {
+
             if (password.equals(loguser.getPassword())) {
-                FacesContext facesContext = FacesContext.getCurrentInstance();
+
                 HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
                 session.setAttribute("username", username);
                 return "home.xhtml?faces-redirect=true";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Incorrect Password"));
-                redirect = "index.xhtml?faces-redirect=true";
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password is Incorrect."));
+                redirect = null;
             }
         } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Username.", ""));
-            redirect = "index.xhtml?faces-redirect=true";
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid Username."));
+            redirect = null;
         }
         return redirect;
     }
 
-    public String logout(){
+    public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "index.xhtml?faces-redirect=true";
     }
-    
+
     public loginBean(String username, String password) {
         this.username = username;
         this.password = password;

@@ -17,7 +17,7 @@
 
                 <h:panelGrid id="registerGrid" columns="3" cellspacing="1">
 
-                    <h:commandButton value="Back to Login" action="index.xhtml?faces-redirect=true" immediate="true" />
+                    <p:commandButton icon="ui-icon-circle-triangle-w" value="Home" action="roles.xhtml?faces-redirect=true" immediate="true" />
                     <p:column/> <p:column/>
 
                     <p:outputLabel for="username" value="Username: " />
@@ -50,8 +50,8 @@
                     <p:message for="email" />
 
                     <p:outputLabel for="department" value="Department: " />
-                    <p:selectOneMenu id ="department" value="#{accountBean.department}">
-                        <f:selectItem itemValue="" itemLabel="-"/>
+                    <p:selectOneMenu id ="department" value="#{accountBean.department}" required="true">
+                        <f:selectItem itemValue="#{null}" itemLabel="-" noSelectionOption="true"/>
                         <f:selectItem itemValue="manager" itemLabel="Manager" />
                         <f:selectItem itemValue="receptionist" itemLabel="Receptionist" />
                         <f:selectItem itemValue="cleaner" itemLabel="Cleaning Staff" />
@@ -62,7 +62,7 @@
 
                     <p:commandButton value="Submit" action="#{accountBean.register()}" update="registerGrid" style="float:right;"/>
                     <p:column/>
-                    <p:messages id="messages"/>
+                    <h:messages styleClass="errorMessage" />
                 </h:panelGrid>
 
 

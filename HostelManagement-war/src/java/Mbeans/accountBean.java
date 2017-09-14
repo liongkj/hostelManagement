@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -22,7 +21,7 @@ import model.UseraccFacade;
  */
 @Named(value = "accountBean")
 @SessionScoped
-public class accountBean implements Serializable{
+public class accountBean implements Serializable {
 
     @EJB
     private UseraccFacade useraccFacade;
@@ -114,25 +113,24 @@ public class accountBean implements Serializable{
     }
 
     public String register() {
-        String redirect = "";
-                //+ "index.xhtml?faces-redirect=true";
-        System.out.println(username);
-        System.out.println("Registered");
-        
-                Useracc a = new Useracc(username,password,email, department, phoneNo, IC, address);
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        String redirect = "index.xhtml?faces-redirect=true";
+        if (checkUsername(username)) {
+            if (!department.equals("-")) {
+                Useracc a = new Useracc(username, password, email, department, phoneNo, IC, address);
                 useraccFacade.create(a);
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "User Registered.", ""));
-//        if (checkUsername(username)) {
-//            if (!department.equals("-")) {
-//                
-//            }
-//        } else {
-//            System.out.println("username exist");
-//
-//            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Username Exist", "Username Exist"));
-//
-//            redirect = "";
-//        }
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User Registered"));
+                
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Please Select a Department."));
+                redirect = null;
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Username Exist", "Username Exist"));
+            redirect = null;
+        }
         return redirect;
     }
 
