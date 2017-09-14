@@ -13,6 +13,8 @@ import javax.inject.Named;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.print.attribute.standard.Severity;
+
 import javax.servlet.http.HttpSession;
 import model.Useracc;
 import model.UseraccFacade;
@@ -49,19 +51,11 @@ public class loginBean {
                 session.setAttribute("username", username);
                 return "home.xhtml?faces-redirect=true";
             } else {
-                FacesContext.getCurrentInstance().addMessage(
-                        null,
-                        new FacesMessage(FacesMessage.SEVERITY_WARN,
-                                "Incorrect Passowrd",
-                                "Please enter correct username and Password"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Incorrect Password"));
                 redirect = "index.xhtml?faces-redirect=true";
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage(
-                    null,
-                    new FacesMessage(FacesMessage.SEVERITY_WARN,
-                            "Invalid username",
-                            "Please enter correct username and Password"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid Username.", ""));
             redirect = "index.xhtml?faces-redirect=true";
         }
         return redirect;
