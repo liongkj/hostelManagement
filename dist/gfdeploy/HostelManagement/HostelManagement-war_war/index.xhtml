@@ -13,7 +13,7 @@
         <div id="login-panel">
             <h:form id="loginForm">
                 <h2 style="margin: 10px 30px">APU Hostel Management System</h2>
-                <h:panelGrid columns="3" border="1">
+                <h:panelGrid columns="3">
 
                     <h:outputText value="Username: " />
                     <h:inputText id="username" value="#{loginBean.username}" required="true" requiredMessage="Please enter your username" />
@@ -28,7 +28,7 @@
 
                     <h:messages styleClass="errorMessage" /> <!-- Global messages -->
                     
-                    <h:commandLink action="registerStaff.xhtml?faces-redirect=true" value="Register New User." immediate="true"/>
+                    <h:commandLink action="register.xhtml?faces-redirect=true" value="Register New User." immediate="true"/>
                 </h:panelGrid>
 
 

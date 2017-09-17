@@ -23,6 +23,7 @@ public class Useracc implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String name;
     private String username;
     private String password;
     private String email;
@@ -34,7 +35,8 @@ public class Useracc implements Serializable {
     public Useracc() {
     }
 
-    public Useracc(String username, String password, String email, String department, String phoneNo, String IC, String address) {
+    public Useracc(String name,String username, String password, String email, String department, String phoneNo, String IC, String address) {
+        this.name = name;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -77,6 +79,13 @@ public class Useracc implements Serializable {
         return address;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
     
     public void setUsername(String username) {
         this.username = username;

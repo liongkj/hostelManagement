@@ -2,12 +2,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title>Facelet Title</title>
-        <link rel="stylesheet" href="resource/css/demo.css"/>
-        <link rel="stylesheet" href="resource/css/header-user-dropdown.css"/>
+        <title></title>
+        <link href="../resource/css/demo.css" rel="stylesheet" type="text/css"/>
+        <link href="../resource/css/header-user-dropdown.css" rel="stylesheet" type="text/css"/>
         <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'/>
     </h:head>
     <h:body>
@@ -15,21 +15,23 @@
             <header class="header-user-dropdown">
 
                 <div class="header-limiter">
-                    <h1><a href="#">Company<span>logo</span></a></h1>
+                    <h1><a href="home.jsf">APU<span>Hostel</span></a></h1>
 
                     <nav>
                         <a href="#">Overview</a>
-                        <h:commandLink value="Roles" action="roles.xhtml"/>
+                        <h:commandLink value="Roles" action="/manager/roles.xhtml"/>
+                        <h:commandLink value="Add New User" action="/manager/registerStaff.xhtml"/>
                         <a href="#">Reports</a>
                     </nav>
 
 
                     <div class="header-user-menu">
-                        <img src="resource/img/usericon.png" alt=""/>
+                        <img src="../resource/img/usericon.png" alt=""/>
 
                         <ul>
-                            <li><a href="#">Edit Profile</a></li>
-                            <li><a href="#{loginBean.logout()}" class="highlight">Logout</a></li>
+                            <li><a href="profile.jsf">Edit Profile</a></li>
+                            <p:commandButton action="#{loginBean.logout()}" value="Logout"/>
+
                         </ul>
                     </div>
 

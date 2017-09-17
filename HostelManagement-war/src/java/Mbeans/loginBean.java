@@ -5,66 +5,43 @@
  */
 package Mbeans;
 
+import java.io.Serializable;
 import java.util.List;
-
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.print.attribute.standard.Severity;
-
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import model.Useracc;
 import model.UseraccFacade;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author KhaiKhai
  */
-@Named(value = "loginBean")
-@ApplicationScoped
-public class loginBean {
+@ManagedBean(name = "loginBean", eager = true)
+@SessionScoped
+public class loginBean implements Serializable {
 
     @EJB
     private UseraccFacade useraccFacade;
+
     List<Useracc> ul;
     private String username;
     private String password;
+    private Useracc loguser;
 
-    Useracc loguser = null;
+    public Useracc getLoguser() {
 
-    public String login() {
-        String redirect = "";
-        ul = useraccFacade.findAll();
-        for (int i = 0; i < ul.size(); i++) {
-            if (username.equals(ul.get(i).getUsername())) {
-                loguser = ul.get(i);
-            }
-        }
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        if (loguser != null) {
-
-            if (password.equals(loguser.getPassword())) {
-
-                HttpSession session = (HttpSession) facesContext.getExternalContext().getSession(true);
-                session.setAttribute("username", username);
-                return "home.xhtml?faces-redirect=true";
-            } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password is Incorrect."));
-                redirect = null;
-            }
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid Username."));
-            redirect = null;
-        }
-        return redirect;
+        return loguser;
     }
 
-    public String logout() {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "index.xhtml?faces-redirect=true";
+    public void setLoguser(Useracc loguser) {
+        this.loguser = loguser;
     }
 
     public loginBean(String username, String password) {
@@ -93,7 +70,59 @@ public class loginBean {
      */
     public loginBean() {
 
-        System.out.println("Login Bean called");
     }
 
+     public String logout() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) ec.getSession(false);
+        HttpServletResponse response = (HttpServletResponse) ec.getResponse();
+         System.out.println("Printing session map: ");
+        System.out.print(ec.getSessionMap());
+        System.out.println("invalidating session");
+        session.invalidate();
+
+        return "/index.jsf?faces-redirect=true";
+    }
+
+    
+    public String login() {
+        Useracc log = null;
+        String redirect = null;
+        ul = useraccFacade.findAll();
+        for (int i = 0; i < ul.size(); i++) {
+            if (username.equals(ul.get(i).getUsername())) {
+                log = ul.get(i);
+            }
+        }
+        if (log != null) {
+
+            if (password.equals(log.getPassword())) {
+//                
+                FacesContext context = FacesContext.getCurrentInstance();
+//                HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
+//                session.setAttribute("username", username);
+                context.getExternalContext().getSessionMap().put("username", username);
+                System.out.println(log.getUsername() + " logged in");
+                this.loguser = log;
+                System.out.println("before");
+                redirect = "/manager/home.xhtml?faces-redirect=true";
+
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password is Incorrect."));
+                
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid Username."));
+            
+        }
+        return redirect;
+    }
+
+    public boolean isLoggedIn() {
+
+        return loguser != null;
+
+    }
+
+   
 }

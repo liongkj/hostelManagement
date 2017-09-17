@@ -12,7 +12,7 @@ and open the template in the editor.
                 font-family: "Tohoma";
                 
             }
-            #login-panel , #roles-panel, #register-panel{
+            #login-panel , #roles-panel, #register-panel, #profile-panel{
                 width : 500px;
                 margin: 50px auto;
             }
@@ -25,12 +25,12 @@ and open the template in the editor.
                 outline:none;
             }
             
-            #login-panel input[type='text'],#login-panel input[type='password'], #register-panel input[type='password'],#register-panel input[type='text']{
+            #login-panel input[type='text'],#login-panel input[type='password'], #register-panel input[type='password'],#register-panel input[type='text'],#profile-panel input[type='text']{
                 border: 1px solid #DDD;
                 padding: 3px;
                 border-radius:3px;
             }
-            #login-panel input[type='submit'], #register-panel input[type='submit']{
+            #login-panel input[type='submit'], #register-panel input[type='submit'], #profile-panel input [type='submit']{
                 border: 1px solid #DDD;
                 width:100%;
                 padding:5px;
