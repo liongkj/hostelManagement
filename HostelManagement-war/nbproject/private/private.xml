@@ -5,10 +5,11 @@
         <group>
             <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/header.xhtml</file>
             <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/src/java/Mbeans/accountBean.java</file>
-            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/profile.xhtml</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/registerStaff.xhtml</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/register.xhtml</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/roles.xhtml</file>
             <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/src/java/Mbeans/rolesBean.java</file>
-            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/src/java/Mbeans/loginBean.java</file>
-            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/home.xhtml</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/index.xhtml</file>
         </group>
     </open-files>
 </project-private>

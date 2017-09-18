@@ -19,12 +19,12 @@
         <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>
 
-            <p:dataTable id="acc" var="acc" value="#{rolesBean.acc}" editable="true" editMode="cell" widgetVar="cellAccs" style="text-align: center;">
+            <p:dataTable id="accTable" var="acc" value="#{rolesBean.acc}" editable="true" editMode="cell" widgetVar="cellAccs" style="text-align: center;">
                 <f:facet name="header">
                     APU Hostel Management Employee
                 </f:facet>
 
-                <p:ajax event="cellEdit" listener="#{rolesBean.onCellEdit}" update=":form:msgs" />
+                <p:ajax event="cellEdit" listener="#{rolesBean.onCellEdit}" update=":form:msgs :form:accTable" />
 
                 <p:column headerText="Name">
                     <p:cellEditor>
@@ -44,9 +44,11 @@
                         <f:facet name="output"><h:outputText value="#{acc.department}" /></f:facet>
                         <f:facet name="input">
                             <h:selectOneMenu value="#{acc.department}" style="width:100%">
-                                <f:selectItem itemValue="Manager" itemLabel="Manager" />
-                                <f:selectItem itemValue="Receptionist" itemLabel="Receptionist" />
-                                <f:selectItem itemValue="Cleaner" itemLabel="Cleaning Staff" />
+                                <f:selectItem itemValue="-" itemLabel="unassigned" noSelectionOption="true"/>
+                                <f:selectItem itemValue="manager" itemLabel="Manager" />
+                                <f:selectItem itemValue="reservation" itemLabel="Reservation" />
+                                <f:selectItem itemValue="front" itemLabel="Front Desk" />
+                                <f:selectItem itemValue="cleaner" itemLabel="Cleaning Staff" />
                             </h:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
@@ -55,24 +57,34 @@
                 <p:column headerText="Phone Number">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{acc.phoneNo}" /></f:facet>
-                        <f:facet name="input"><p:inputMask value="#{acc.phoneNo}" mask="(999) 999-9999" style="width:96%"/></f:facet>
+                        <f:facet name="input">
+                            <!--<p:inputMask value="#{acc.phoneNo}" mask="(999) 999-9999" style="width:96%"/>-->
+                            <p:inputText id="phone" required="true" value="#{acc.phoneNo}" > 
+                                <f:validateLength  minimum="10" maximum="11" />
+                            </p:inputText>
+                        </f:facet>
                     </p:cellEditor>
                 </p:column>
-                
+
                 <p:column headerText="IC Number">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{acc.IC}" /></f:facet>
                         <f:facet name="input"><p:inputMask value="#{acc.IC}" mask="999999-99-9999"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-                
+
                 <p:column headerText="Address">
                     <p:cellEditor>
                         <f:facet name="output"><h:outputText value="#{acc.address}" /></f:facet>
                         <f:facet name="input"><p:inputText value="#{acc.address}"/></f:facet>
                     </p:cellEditor>
                 </p:column>
-                
+
+                <p:column style="width:45px" headerText="Delete">
+                    <p:commandButton icon="ui-icon-circle-minus" title=""
+                                     actionListener="#{rolesBean.delAcc(acc)}" oncomplete="javascript:location.reload(true)" update=":form:msgs :form:accTable" />
+                </p:column>                
+
             </p:dataTable>
 
 

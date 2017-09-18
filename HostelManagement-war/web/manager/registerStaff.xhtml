@@ -19,7 +19,7 @@
 
                 <h:panelGrid id="registerGrid" columns="3" cellspacing="1">
 
-                    <p:commandButton icon="ui-icon-circle-triangle-w" value="Home" action="roles.xhtml?faces-redirect=true" immediate="true" />
+                    <p:commandButton icon="ui-icon-circle-triangle-w" value="Home" action="/manager/home.xhtml?faces-redirect=true" immediate="true" />
                     <p:column/> <p:column/>
 
                     <p:outputLabel for="username" value="Username: " />
@@ -61,14 +61,15 @@
 
                     <p:outputLabel for="department" value="Department: " />
                     <p:selectOneMenu id ="department" value="#{accountBean.department}" required="true">
-                        <f:selectItem itemValue="#{null}" itemLabel="-" noSelectionOption="true"/>
+                        <f:selectItem itemValue="-" itemLabel="unassigned" noSelectionOption="true"/>
                         <f:selectItem itemValue="manager" itemLabel="Manager" />
-                        <f:selectItem itemValue="manager" itemLabel="Manager" />
-                        <f:selectItem itemValue="manager" itemLabel="Manager" />
+                        <f:selectItem itemValue="reservation" itemLabel="Reservation" />
+                        <f:selectItem itemValue="front" itemLabel="Front Desk" />
+                        <f:selectItem itemValue="cleaner" itemLabel="Cleaning Staff" />
                     </p:selectOneMenu>
                     <p:message for="department" display="icon"/>
 
-                   <p:commandButton value="Reset" update="registerGrid" process="@this" actionListener="#{accountBean.reset}" />
+                    <p:commandButton value="Reset" update="registerGrid" process="@this" actionListener="#{accountBean.reset}" />
 
                     <p:commandButton value="Submit" action="#{accountBean.registerStaff()}" update="registerGrid" style="float:right;"/>
                     <p:column/>

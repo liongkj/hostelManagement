@@ -13,10 +13,10 @@ and open the template in the editor.
                 
             }
             #login-panel , #roles-panel, #register-panel, #profile-panel{
-                width : 500px;
+                width : 600px;
                 margin: 50px auto;
             }
-            #login-panel table, #register-panel table{
+            #login-panel table, #register-panel table, #profile-panel form{
                 border:1px solid #DDD;
                 padding: 50px;
                 border-radius:3px;

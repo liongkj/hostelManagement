@@ -183,12 +183,12 @@ public class accountBean implements Serializable {
     public String registerStaff() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        String redirect = "/manager/home.xhtml?faces-redirect=true";
+        String redirect = null;
         if (checkUsername(username)) {
             if (!department.equals("-")) {
                 Useracc a = new Useracc(name, username, password, email, department, phoneNo, IC, address);
                 useraccFacade.create(a);
-
+                reset();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User Registered"));
 
             } else {

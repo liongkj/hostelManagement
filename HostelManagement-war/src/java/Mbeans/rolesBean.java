@@ -15,6 +15,7 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Useracc;
 import model.UseraccFacade;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CellEditEvent;
 
 /**
@@ -64,6 +65,12 @@ public class rolesBean implements Serializable {
         this.selectedAcc = selectedAcc;
     }
 
+    public void delAcc(Useracc selectedAcc){
+        useraccFacade.remove(selectedAcc);reset();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Account Deleted", ""));
+    
+    }
+    
     public void onCellEdit(CellEditEvent event) {
         Object oldValue = event.getOldValue();
         Object newValue = event.getNewValue();
@@ -73,10 +80,15 @@ public class rolesBean implements Serializable {
             //FacesContext.getCurrentInstance().getex.addMessage(null, msg);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue));
             //selectedAcc = useraccFacade.find(oldValue);
-            FacesContext context= FacesContext.getCurrentInstance();
+            FacesContext context = FacesContext.getCurrentInstance();
             Useracc u = context.getApplication().evaluateExpressionGet(context, "#{acc}", Useracc.class);
             useraccFacade.edit(u);
+        } else {
+            reset();
         }
     }
 
+    public void reset() {
+        RequestContext.getCurrentInstance().reset("form:accTable");
+    }
 }

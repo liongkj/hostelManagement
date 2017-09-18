@@ -84,6 +84,20 @@ public class loginBean implements Serializable {
         return "/index.jsf?faces-redirect=true";
     }
 
+     
+     public String checkAcctype(Useracc loguser){
+        char uType;
+        String url="";
+        uType = loguser.getDepartment().charAt(0);
+         System.out.println(uType);
+        if(uType=='m' || uType=='M'){
+            url = "/manager/home.xhtml?faces-redirect=true";
+        }
+        if (uType=='r'||uType=='R'){
+            url = "reservation/home.xhtml?faces-redirect=true";
+        }
+        return url;
+     }
     
     public String login() {
         Useracc log = null;
@@ -97,23 +111,20 @@ public class loginBean implements Serializable {
         if (log != null) {
 
             if (password.equals(log.getPassword())) {
-//                
+            
                 FacesContext context = FacesContext.getCurrentInstance();
-//                HttpSession session = (HttpSession) context2.getExternalContext().getSession(true);
-//                session.setAttribute("username", username);
+
                 context.getExternalContext().getSessionMap().put("username", username);
                 System.out.println(log.getUsername() + " logged in");
                 this.loguser = log;
-                System.out.println("before");
-                redirect = "/manager/home.xhtml?faces-redirect=true";
+                //manager case
+                redirect = checkAcctype(log);
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password is Incorrect."));
-                
             }
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid Username."));
-            
         }
         return redirect;
     }
