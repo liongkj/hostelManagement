@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -27,8 +28,92 @@ public class Guest implements Serializable {
     private String cusID;
     private String email;
     private String IC;
+    private String phone;
     private String address;
     private int age;
+    @ManyToOne
+    private Useracc staff;
+
+    
+
+    public Guest() {
+    }
+
+    public Guest(String Name, String cusID, String email, String IC, String phone, String address, int age, Useracc staff) {
+        this.Name = Name;
+        this.cusID = cusID;
+        this.email = email;
+        this.IC = IC;
+        this.phone = phone;
+        this.address = address;
+        this.age = age;
+        this.staff = staff;
+    }
+
+    
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String Name) {
+        this.Name = Name;
+    }
+
+    public String getCusID() {
+        return cusID;
+    }
+
+    public void setCusID(String cusID) {
+        this.cusID = cusID;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getIC() {
+        return IC;
+    }
+
+    public void setIC(String IC) {
+        this.IC = IC;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public Useracc getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Useracc staff) {
+        this.staff = staff;
+    }
     
     public Long getId() {
         return id;
@@ -38,6 +123,8 @@ public class Guest implements Serializable {
         this.id = id;
     }
 
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

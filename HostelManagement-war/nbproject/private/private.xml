@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/src/java/Mbeans/roomBean.java</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/addRoom.xhtml</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/manager/registerStaff.xhtml</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/src/java/Mbeans/bookingBean.java</file>
+            <file>file:/C:/Users/kj/Documents/NetBeansProjects/HostelManagement/HostelManagement-war/web/reservation/createBooking.xhtml</file>
+        </group>
     </open-files>
 </project-private>

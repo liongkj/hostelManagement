@@ -10,10 +10,11 @@
         <link rel='stylesheet' type="text/css" href="resource/css/demo.css"/>
     </h:head>
     <h:body>
-        <div id="login-panel">
-            <h:form id="loginForm">
-                <h2 style="margin: 10px 30px">APU Hostel Management System</h2>
-                <h:panelGrid columns="3">
+
+        <h:form id="loginForm">
+            
+            <p:panel header="APU Hostel Management System" style="margin-bottom:10px;width: 400px; margin: 0px auto">
+                <h:panelGrid columns="3" cellpadding="5">
 
                     <h:outputText value="Username: " />
                     <h:inputText id="username" value="#{loginBean.username}" required="true" requiredMessage="Please enter your username" />
@@ -23,20 +24,20 @@
                     <h:inputSecret id="password" value="#{loginBean.password}" required="true" requiredMessage="Please enter your password" />
                     <p:column/>
 
+                    <p:column colspan="2" />
+
 
                     <h:commandButton value="Login" action="#{loginBean.login}" />
 
                     <h:messages styleClass="errorMessage" /> <!-- Global messages -->
-                    
+
                     <h:commandLink action="register.xhtml?faces-redirect=true" value="Register New User." immediate="true"/>
                 </h:panelGrid>
+            </p:panel>
 
 
+        </h:form>
 
-
-            </h:form>
-
-        </div>
 
     </h:body>
 </html>

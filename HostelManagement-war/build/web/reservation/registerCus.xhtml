@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Customer Registration</title>
+        <link href="../resource/css/style.css" rel="stylesheet" type="text/css"/>
+        <link href="../resource/css/demo.css" rel="stylesheet" type="text/css"/>
+    </h:head>
+
+    <h:body>
+        <ui:include src="/reservation/header.xhtml"/>
+        <div id="register-panel">
+
+            <h:form id="regForm">
+
+                <h:panelGrid id="registerGrid" columns="3" cellspacing="1">
+
+                    <p:commandButton icon="ui-icon-circle-triangle-w" value="Home" action="/reservation/home.xhtml?faces-redirect=true" immediate="true" />
+                    <p:column/> <p:column/>
+
+                    <p:outputLabel for="name" value="Customer Name: " />
+                    <p:inputText id="name" required="true" value="#{customerBean.name}"/>
+                    <p:message id="usernameError" for="name" />
+
+                    <p:outputLabel for="IC" value="IC Number: " />
+                    <p:inputText id="IC" required="true" value="#{customerBean.IC}" validatorMessage="Please enter IC number without '-'">
+                        <f:validateRegex pattern="^([+]?[\d]{12}+)?$" />
+                    </p:inputText>
+                    <p:message for="IC" display="icon"/>
+
+                    <p:outputLabel for="phone" value="Phone: " />
+                    <p:inputText id="phone" required="true" value="#{customerBean.phone}" > 
+                        <f:validateRegex pattern="^([+]?[\d]{10,11}+)?$" />
+                    </p:inputText>
+                    <p:message for="phone" display="icon"/>
+
+                    <p:outputLabel for="address" value="Address: " />
+                    <p:inputText id="address" required="true" value="#{customerBean.address}"/>
+                    <p:message for="address" display="icon" />
+
+                    <p:outputLabel for="email" value="Email: " />
+                    <p:inputText id="email" required="true" label="email"
+                                 requiredMessage="Please enter your email address."
+                                 validatorMessage="Invalid email format"
+                                 value="#{customerBean.email}">
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="email" />
+
+                    <p:outputLabel for="age" value="Age: " />
+                    <p:selectOneMenu id ="age" value="#{customerBean.age}" required="true">
+                        <f:selectItem itemValue="-" itemLabel="Select age" noSelectionOption="true"/>
+                        <f:selectItems value="#{customerBean.ageList}"/>
+                        
+                    </p:selectOneMenu>
+                    <p:message for="age" display="icon"/>
+
+                    <p:commandButton value="Reset" update="registerGrid" process="@this" actionListener="#{customerBean.reset}" />
+
+                    <p:commandButton value="Submit" action="#{customerBean.register()}" update="registerGrid" style="float:right;"/>
+                    <p:column/>
+                    <h:messages styleClass="errorMessage" />
+                </h:panelGrid>
+
+            </h:form>
+
+        </div>
+    </h:body>
+</html>
+

@@ -114,7 +114,7 @@ public class Useracc implements Serializable {
     public void setAddress(String address) {
         this.address = address;
     }
-    
+
     
     public Long getId() {
         return id;

@@ -3,109 +3,54 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:include src="/reservation/header.xhtml"/>
 
-        <h:form>
+        <h:form id="form">
+            <p:growl id="customerMsgs" showDetail="true" />
 
-            <p:growl id="growl" sticky="true" showDetail="true"/>
+            <p:panel header="Select a Customer" style="margin-bottom:10px;">
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="cusName" value="Customer Name: " />
+                    <p:selectOneMenu id="cusName" required="true" validatorMessage="Please select a customer." value="#{bookingBean.name}" style="width:150px">
+                        <f:selectItem itemLabel="-" itemValue="-" noSelectionOption="true" />
+                        <f:selectItems value="#{bookingBean.guestList}" var="cus" itemLabel="#{cus.name}"/>
+                    </p:selectOneMenu>
+                    <p:commandButton id="submitCus" value="Check" process="@this,cusName" update="customerMsgs" icon="ui-icon-check" />
+                </h:panelGrid>
 
-            <p:wizard flowListener="#{userWizard.onFlowProcess}">
-                <p:tab id="personal" title="Personal">
-                    <p:panel header="Personal Details">
-                        <p:messages />
-                        <h:panelGrid columns="2" columnClasses="label, value">
-                            <h:outputLabel value="Customer Name " for="group" />
-                            
-                            <p:autoComplete id="group" value="#{bookingBean.name}" completeMethod="#{bookingBean.completeThemeContains}"
-                                            var="name" itemLabel="#{bookingBean.name}" itemValue="#{name}" groupBy="#{bookingBean.getThemeGroup(theme)}" scrollHeight="250" converter=""/>
-                        </h:panelGrid>
-                    </p:panel>
-                </p:tab>
+            </p:panel>
 
-                <p:tab id="address" title="Address">
-                    <p:panel header="Address Details">
-                        <p:messages />
-                        <h:panelGrid columns="2" columnClasses="label, value">
-                            <h:outputText value="Street: " />
-                            <p:inputText value="#{userWizard.user.street}" />
+            <p:panel header="Select Date" style="margin-bottom:10px;">
+                <p:growl id="bookingMsgs" showDetail="true" />
 
-                            <h:outputText value="Postal Code: " />
-                            <p:inputText value="#{userWizard.user.postalCode}" />
+                <h:panelGrid id="grid" columns="3" cellpadding="5">
+                    <p:outputLabel for="fNight" value="Check in Date:" />
+                    <p:calendar required="true" requiredMessage="Please enter check in date." id="fNight" navigator="true" pattern="dd/MM/yyyy" value="#{bookingBean.firstNight}" mindate="#{bookingBean.min1}">
+                        <p:ajax event="dateSelect" update="lNight" />
+                    </p:calendar>
+                    <p:column/>
+                    <p:outputLabel for="lNight" value="Check out Date:" />
+                    <p:calendar required="true" requiredMessage="Please Enter check out date." id="lNight" navigator="true" pattern="dd/MM/yyyy" value="#{bookingBean.lastNight}" mindate="#{bookingBean.min2}"/>
+                    <p:commandButton id="submitAvailability" actionListener="#{bookingBean.listBookings}" process="@this fNight lNight" value="Check Room Availability" update="bookingMsgs room" icon="ui-icon-check" />
+                </h:panelGrid>
 
-                            <h:outputText value="City: " />
-                            <p:inputText value="#{userWizard.user.city}" />
+            </p:panel>
 
-                            <h:outputText value="Skip to last: " />
-                            <h:selectBooleanCheckbox value="#{userWizard.skip}" />
-                        </h:panelGrid>
-                    </p:panel>
-                </p:tab>
+            <p:panel id="roomPanel"  header="Select Room" style="margin-bottom:10px;">
+                <p:outputLabel for="room" value="Rooms: " />
+                <p:selectOneMenu id="room" value="#{bookingBean.selectedRoom}">
+                    <f:selectItem itemLabel="Select One" itemValue="" />
+                    <f:selectItems value="#{bookingBean.rooms}" var="r" itemLabel="#{r.id}" />
+                </p:selectOneMenu>
+            </p:panel>
 
-                <p:tab id="contact" title="Contact">
-                    <p:panel header="Contact Information">
-                        <p:messages />
-                        <h:panelGrid columns="2" columnClasses="label, value">
-                            <h:outputText value="Email: *" />
-                            <p:inputText value="#{userWizard.user.email}" required="true" label="Email"/>
-
-                            <h:outputText value="Phone: " />
-                            <p:inputText value="#{userWizard.user.phone}"/>
-
-                            <h:outputText value="Additional Info: " />
-                            <p:inputText value="#{userWizard.user.info}"/>
-                        </h:panelGrid>
-                    </p:panel>
-                </p:tab>
-
-                <p:tab id="confirm" title="Confirmation">
-                    <p:panel header="Confirmation">
-                        <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
-                            <h:panelGrid columns="2" columnClasses="label, value">
-                                <h:outputText value="Firstname: " />
-                                <h:outputText value="#{userWizard.user.firstname}" styleClass="outputLabel"/>
-
-                                <h:outputText value="Lastname: " />
-                                <h:outputText value="#{userWizard.user.lastname}" styleClass="outputLabel"/>
-
-                                <h:outputText value="Age: " />
-                                <h:outputText value="#{userWizard.user.age}" styleClass="outputLabel"/>
-                            </h:panelGrid>
-
-                            <h:panelGrid columns="2" columnClasses="label, value">
-                                <h:outputText value="Street: " />
-                                <h:outputText value="#{userWizard.user.street}" styleClass="outputLabel"/>
-
-                                <h:outputText value="Postal: " />
-                                <h:outputText value="#{userWizard.user.postalCode}" styleClass="outputLabel"/>
-
-                                <h:outputText value="City: " />
-                                <h:outputText value="#{userWizard.user.city}" styleClass="outputLabel"/>
-                            </h:panelGrid>
-
-                            <h:panelGrid columns="2" columnClasses="label, value">
-                                <h:outputText value="Email: " />
-                                <h:outputText value="#{userWizard.user.email}" styleClass="outputLabel"/>
-
-                                <h:outputText value="Phone " />
-                                <h:outputText value="#{userWizard.user.phone}" styleClass="outputLabel"/>
-
-                                <h:outputText value="Info: " />
-                                <h:outputText value="#{userWizard.user.info}" styleClass="outputLabel"/>
-
-                                <h:outputText />
-                                <h:outputText />
-                            </h:panelGrid>
-                        </h:panelGrid>
-
-                        <p:commandButton value="Submit" actionListener="#{userWizard.save}" update="growl" process="@this"/>
-                    </p:panel>
-                </p:tab>
-            </p:wizard>
+            <p:commandButton value="Submit" style="float:right"/>
 
         </h:form>
 
