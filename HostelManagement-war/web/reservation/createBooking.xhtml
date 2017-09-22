@@ -12,35 +12,55 @@
         <ui:include src="/reservation/header.xhtml"/>
 
         <h:form id="form">
-            <p:growl id="customerMsgs" showDetail="true" />
+            <p:growl id="msgs" showDetail="true" />
 
             <p:panel header="Select a Customer" style="margin-bottom:10px;">
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="cusName" value="Customer Name: " />
-                    <p:selectOneMenu id="cusName" required="true" validatorMessage="Please select a customer." value="#{bookingBean.name}" style="width:150px">
+                    <p:selectOneMenu id="cusName" required="true" validatorMessage="Please select a customer." valueChangeListener="#{bookingBean.changeUser}" style="width:150px">
                         <f:selectItem itemLabel="-" itemValue="-" noSelectionOption="true" />
-                        <f:selectItems value="#{bookingBean.guestList}" var="cus" itemLabel="#{cus.name}"/>
+                        <f:selectItems value="#{bookingBean.guestList}" var="cus" itemValue="#{cus.id}" itemLabel="#{cus.name}"/>
                     </p:selectOneMenu>
-                    <p:commandButton id="submitCus" value="Check" process="@this,cusName" update="customerMsgs" icon="ui-icon-check" />
                 </h:panelGrid>
-
             </p:panel>
+        </h:form>
 
+        <h:form id="form1">
             <p:panel header="Select Date" style="margin-bottom:10px;">
-                <p:growl id="bookingMsgs" showDetail="true" />
-
-                <h:panelGrid id="grid" columns="3" cellpadding="5">
-                    <p:outputLabel for="fNight" value="Check in Date:" />
-                    <p:calendar required="true" requiredMessage="Please enter check in date." id="fNight" navigator="true" pattern="dd/MM/yyyy" value="#{bookingBean.firstNight}" mindate="#{bookingBean.min1}">
-                        <p:ajax event="dateSelect" update="lNight" />
-                    </p:calendar>
-                    <p:column/>
-                    <p:outputLabel for="lNight" value="Check out Date:" />
-                    <p:calendar required="true" requiredMessage="Please Enter check out date." id="lNight" navigator="true" pattern="dd/MM/yyyy" value="#{bookingBean.lastNight}" mindate="#{bookingBean.min2}"/>
-                    <p:commandButton id="submitAvailability" actionListener="#{bookingBean.listBookings}" process="@this fNight lNight" value="Check Room Availability" update="bookingMsgs room" icon="ui-icon-check" />
+                <h:panelGrid columns="1">
+                    <p:outputLabel id="lblDate" for="dateSelectBtn" value="#{bookingBean.dateRangeString}"/>
+                    
+                    <p:commandButton id="dateSelectBtn" value="Select new booking date" type="button"
+                                     onclick="PF('dateRangeDlg').show();"/>
                 </h:panelGrid>
+                <p:dialog closable="false"
+                          header="Date Range Picker" resizable="false"
+                          widgetVar="dateRangeDlg" minHeight="40" modal="true">
+                    <p:outputPanel>
+                        <h:form> 
 
+                            <p:calendar id="idStartDate" binding="#{startDate}"
+                                        value="#{bookingBean.firstNight}" mindate="#{bookingBean.min}">
+                            </p:calendar>
+
+                            <p:calendar id="idEndDate" value="#{bookingBean.lastNight}" mindate="#{bookingBean.min}">
+                                <f:validator validatorId="dateRangeValidator"/>
+                                <f:attribute name="startDateAttr" value="#{startDate}"/>
+                            </p:calendar>
+                            <br/>
+                            <p:messages showDetail="true"
+                                        autoUpdate="true"/>
+                            <br/>
+                            <p:commandButton value="Save" icon="ui-icon-check"  update=":form1:lblDate"/>
+                            <p:commandButton value="Cancel" icon="ui-icon-close"
+                                             immediate="true"
+                                             onclick="PF('dateRangeDlg').hide()"/>
+                        </h:form>
+                    </p:outputPanel>
+                </p:dialog>
+                
             </p:panel>
+
 
             <p:panel id="roomPanel"  header="Select Room" style="margin-bottom:10px;">
                 <p:outputLabel for="room" value="Rooms: " />
@@ -50,10 +70,9 @@
                 </p:selectOneMenu>
             </p:panel>
 
-            <p:commandButton value="Submit" style="float:right"/>
+            <p:commandButton value="Submit" style="float:right" action="#{bookingBean.confirmBooking}"/>
 
         </h:form>
-
     </h:body>
 </html>
 

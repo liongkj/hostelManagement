@@ -6,8 +6,10 @@
 package Mbeans;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -17,12 +19,17 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import model.Booking;
 import model.BookingFacade;
 import model.Guest;
 import model.GuestFacade;
 import model.Room;
 import model.RoomFacade;
+import model.Useracc;
+import model.UseraccFacade;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -33,6 +40,9 @@ import model.RoomFacade;
 public class bookingBean implements Serializable {
 
     @EJB
+    private UseraccFacade useraccFacade;
+
+    @EJB
     private RoomFacade roomFacade;
 
     @EJB
@@ -41,21 +51,20 @@ public class bookingBean implements Serializable {
     @EJB
     private GuestFacade guestFacade;
 
-    private String name;
+    private Guest name;
+    private String cusName;
     private String id;
+    private String staffUser;
+    private Useracc staff;
+    private Room selectedRoom;
+    private Booking booking;
 
     private List<Guest> guestList;
     private List<Room> rooms;
-    private Room selectedRoom;
     private List<Booking> bookings;
-    private Booking booking;
-    
 
-    
-    private Date firstNight, lastNight;
-    private Date min1 = new Date();
-    private Date min2 = new Date();
-    private String test;
+    private Date firstNight, lastNight, min;
+    private final DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Creates a new instance of bookingBean
@@ -63,6 +72,21 @@ public class bookingBean implements Serializable {
     @PostConstruct
     public void init() {
         guestList = guestFacade.findAll();
+        staffUser = (String) (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
+    }
+
+    public void changeUser(ValueChangeEvent e) {
+
+        id = e.getNewValue().toString();
+
+        System.out.println("Selected user is " + name);
+    }
+
+    public void validateDate(SelectEvent event) {
+        System.out.println(event.getObject());
+        if (firstNight.compareTo(lastNight) == 0) {
+
+        }
     }
 
     public void listBookings() {
@@ -73,7 +97,11 @@ public class bookingBean implements Serializable {
 //            availableRooms 
             System.out.println("Booking table empty");
             setRooms(roomFacade.findAll());
-
+//            System.out.println(name.getName());
+//            System.out.println(staff.getName());
+//            System.out.println( selectedRoom);
+//            System.out.println(firstNight);
+//            System.out.println(lastNight);
         } else {
             for (int i = 0; i < bookings.size(); i++) {
                 Date first = (Date) bookings.get(i).getfNight(); //booking table
@@ -84,26 +112,113 @@ public class bookingBean implements Serializable {
                 }
             }
         }
+//        System.out.println(name.getName() + staff.getName() + selectedRoom + firstNight + lastNight);
     }
 
-    public List<Room> getRooms() {
-        return rooms;
+    public void confirmBooking() {
+        setStaff(staffUser);
+        System.out.println(name.getName() + staff.getName() + selectedRoom + firstNight + lastNight);
+        booking = new Booking(name, staff, selectedRoom, firstNight, lastNight);
+        bookingFacade.create(booking);
+        System.out.println("Booking Done");
     }
 
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
+    public void setStaff(String username) {
+        List<Useracc> ul;
+        ul = useraccFacade.findAll();
+        for (int i = 0; i < ul.size(); i++) {
+            if (username.equals(ul.get(i).getUsername())) {
+                this.staff = ul.get(i);
+            }
+        }
     }
 
-    public Booking getBooking() {
-        return booking;
+    public void selectDate(){
+        getFirstNight();
+        getLastNight();
+    }
+    
+    public Date getMin() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2017, 9, 1);
+        min = cal.getTime();
+        return min;
     }
 
-    public void setBooking(Booking booking) {
-        this.booking = booking;
+    public String getDateRangeString() {
+        return String.format("From: %s To: %s", formatter.format(firstNight), formatter.format(lastNight));
+    }
+
+    public UseraccFacade getUseraccFacade() {
+        return useraccFacade;
+    }
+
+    public void setUseraccFacade(UseraccFacade useraccFacade) {
+        this.useraccFacade = useraccFacade;
+    }
+
+    public RoomFacade getRoomFacade() {
+        return roomFacade;
+    }
+
+    public void setRoomFacade(RoomFacade roomFacade) {
+        this.roomFacade = roomFacade;
+    }
+
+    public BookingFacade getBookingFacade() {
+        return bookingFacade;
+    }
+
+    public void setBookingFacade(BookingFacade bookingFacade) {
+        this.bookingFacade = bookingFacade;
     }
 
     public GuestFacade getGuestFacade() {
         return guestFacade;
+    }
+
+    public void setGuestFacade(GuestFacade guestFacade) {
+        this.guestFacade = guestFacade;
+    }
+
+    public Guest getName() {
+        return name;
+    }
+
+    public void setName(Guest name) {
+        this.name = name;
+    }
+
+    public String getCusName() {
+        return cusName;
+    }
+
+    public void setCusName(String cusName) {
+        this.cusName = cusName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStaffUser() {
+        return staffUser;
+    }
+
+    public void setStaffUser(String staffUser) {
+        this.staffUser = staffUser;
+    }
+
+    public Useracc getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Useracc staff) {
+        this.staff = staff;
     }
 
     public Room getSelectedRoom() {
@@ -114,24 +229,28 @@ public class bookingBean implements Serializable {
         this.selectedRoom = selectedRoom;
     }
 
-    public void setGuestFacade(GuestFacade guestFacade) {
-        this.guestFacade = guestFacade;
+    public Booking getBooking() {
+        return booking;
     }
 
-    public String getTest() {
-        return test;
+    public void setBooking(Booking booking) {
+        this.booking = booking;
     }
 
-    public void setTest(String test) {
-        this.test = test;
+    public List<Guest> getGuestList() {
+        return guestList;
     }
 
-    public String getName() {
-        return name;
+    public void setGuestList(List<Guest> guestList) {
+        this.guestList = guestList;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 
     public List<Booking> getBookings() {
@@ -158,53 +277,12 @@ public class bookingBean implements Serializable {
         this.lastNight = lastNight;
     }
 
-    public Date getFirst() {
-        return firstNight;
-    }
-
-    public Date getMin1() {
-        return min1;
-    }
-
-    public Date getMin2() {
-        Date min = new Date(getMin1().getTime() + (1000 * 60 * 60 * 24));
-        return min;
-    }
-
-    public void setMin2(Date min2) {
-
-        this.min2 = min2;
-    }
-
-    public void setFirst(Date first) {
-        this.firstNight = first;
-    }
-
-    public Date getLast() {
-        return lastNight;
-    }
-
-    public void setLast(Date last) {
-        this.lastNight = last;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public List<Guest> getGuestList() {
-        return guestList;
-    }
-
-    public void setGuestList(List<Guest> guestList) {
-        this.guestList = guestList;
-    }
-
     public bookingBean() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(2017, 9, 1);
+        firstNight = cal.getTime();
+        lastNight = cal.getTime();
+        
     }
 
 }

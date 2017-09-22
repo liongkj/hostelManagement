@@ -34,8 +34,6 @@ public class Guest implements Serializable {
     @ManyToOne
     private Useracc staff;
 
-    
-
     public Guest() {
     }
 
