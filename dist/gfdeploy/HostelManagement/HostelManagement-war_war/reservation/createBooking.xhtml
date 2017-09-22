@@ -51,7 +51,7 @@
                             <p:messages showDetail="true"
                                         autoUpdate="true"/>
                             <br/>
-                            <p:commandButton value="Save" icon="ui-icon-check"  update=":form1:lblDate"/>
+                            <p:commandButton value="Save" icon="ui-icon-check"  action="#{bookingBean.selectDate()}" update=":form1:lblDate :form1:room"/>
                             <p:commandButton value="Cancel" icon="ui-icon-close"
                                              immediate="true"
                                              onclick="PF('dateRangeDlg').hide()"/>

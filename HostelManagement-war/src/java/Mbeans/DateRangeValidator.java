@@ -31,7 +31,7 @@ public class DateRangeValidator implements Validator {
         } else {
             RequestContext c = RequestContext.getCurrentInstance();
             c.execute("PF('dateRangeDlg').hide();");
-//            c.execute("location.reload();");
+            c.execute("location.reload();");
         }
     }
 }

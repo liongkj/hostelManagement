@@ -82,12 +82,6 @@ public class bookingBean implements Serializable {
         System.out.println("Selected user is " + name);
     }
 
-    public void validateDate(SelectEvent event) {
-        System.out.println(event.getObject());
-        if (firstNight.compareTo(lastNight) == 0) {
-
-        }
-    }
 
     public void listBookings() {
 
@@ -136,6 +130,7 @@ public class bookingBean implements Serializable {
     public void selectDate(){
         getFirstNight();
         getLastNight();
+        listBookings();
     }
     
     public Date getMin() {
@@ -281,6 +276,7 @@ public class bookingBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         cal.set(2017, 9, 1);
         firstNight = cal.getTime();
+        cal.set(2017, 9, 2);
         lastNight = cal.getTime();
         
     }
