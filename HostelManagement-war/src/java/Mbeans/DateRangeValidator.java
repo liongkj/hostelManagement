@@ -5,6 +5,7 @@
  */
 package Mbeans;
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -25,13 +26,18 @@ public class DateRangeValidator implements Validator {
         Date startDate = (Date) startDateInput.getValue();
         Date endDate = (Date) o;
 
-        if (endDate.before(startDate)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid date selected","Start date cannot be after end date."));
+        if (endDate.compareTo(startDate) == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid date selected", "Check In date cannot be same with Check Out date."));
 
+            if (endDate.before(startDate)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid date selected", "Check In date cannot be after Check Out date."));
+
+            }
         } else {
             RequestContext c = RequestContext.getCurrentInstance();
             c.execute("PF('dateRangeDlg').hide();");
-            c.execute("location.reload();");
+//            c.execute("location.reload();");
         }
+
     }
 }

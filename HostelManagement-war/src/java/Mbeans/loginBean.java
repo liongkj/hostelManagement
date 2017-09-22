@@ -96,6 +96,9 @@ public class loginBean implements Serializable {
         if (uType=='r'||uType=='R'){
             url = "reservation/home.xhtml?faces-redirect=true";
         }
+        if (uType=='f'||uType=='F'){
+            url = "front/home.xhtml?faces-redirect=true";
+        }
         return url;
      }
     

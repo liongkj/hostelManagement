@@ -7,16 +7,17 @@ package Mbeans;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
@@ -29,7 +30,7 @@ import model.Room;
 import model.RoomFacade;
 import model.Useracc;
 import model.UseraccFacade;
-import org.primefaces.event.SelectEvent;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -51,13 +52,14 @@ public class bookingBean implements Serializable {
     @EJB
     private GuestFacade guestFacade;
 
-    private Guest name;
+    private Guest guest;
     private String cusName;
     private String id;
     private String staffUser;
     private Useracc staff;
     private Room selectedRoom;
     private Booking booking;
+    private int roomNo;
 
     private List<Guest> guestList;
     private List<Room> rooms;
@@ -71,52 +73,73 @@ public class bookingBean implements Serializable {
      */
     @PostConstruct
     public void init() {
+        System.out.println("bookingbean called");
         guestList = guestFacade.findAll();
         staffUser = (String) (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
+        Calendar cal = Calendar.getInstance();
+        cal.set(2017, 9, 1);
+        firstNight = cal.getTime();
+        cal.set(2017, 9, 2);
+        lastNight = cal.getTime();
+
     }
 
     public void changeUser(ValueChangeEvent e) {
 
         id = e.getNewValue().toString();
 
-        System.out.println("Selected user is " + name);
+        System.out.println("Selected user is " + guest);
     }
-
 
     public void listBookings() {
 
         bookings = bookingFacade.findAll();
-        List<Room> availableRooms = null;
-        if (bookings.isEmpty()) {
+        List<Room> unRoom = new ArrayList<>();
+        System.out.println("Searching booking table.");
+        setRooms(roomFacade.findAll());
+        if (bookings.isEmpty()) { //if there is no bookings
 //            availableRooms 
             System.out.println("Booking table empty");
-            setRooms(roomFacade.findAll());
-//            System.out.println(name.getName());
-//            System.out.println(staff.getName());
-//            System.out.println( selectedRoom);
-//            System.out.println(firstNight);
-//            System.out.println(lastNight);
+
+            System.out.println(rooms.size());
         } else {
             for (int i = 0; i < bookings.size(); i++) {
-                Date first = (Date) bookings.get(i).getfNight(); //booking table
-                Date last = (Date) bookings.get(i).getlNight();
+                Date first = bookings.get(i).getfNight(); //booking table firstnight
+                Date last =  bookings.get(i).getlNight();//booking table last night
 
-                if (first.compareTo(firstNight) > 0) {
-                    System.out.println("test");
+                if ((first.compareTo(firstNight) <= 0) && (last.compareTo(lastNight) >= 0)) {
+//                    rooms.add(bookings.get(i).getbRoom());
+                    System.out.println("booking id" + bookings.get(i).getId());
+                    unRoom.add(bookings.get(i).getbRoom());
                 }
+                unRoom.forEach((r) -> {
+                    rooms.remove(r);
+                });
+                
             }
+            if(rooms.isEmpty())FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
+        (FacesMessage.SEVERITY_INFO, "No available room", "Please select another date"));
         }
 //        System.out.println(name.getName() + staff.getName() + selectedRoom + firstNight + lastNight);
     }
 
-    public void confirmBooking() {
+    public String confirmBooking() {
+        System.out.println("Try to book");
+        setGuest(id);
         setStaff(staffUser);
-        System.out.println(name.getName() + staff.getName() + selectedRoom + firstNight + lastNight);
-        booking = new Booking(name, staff, selectedRoom, firstNight, lastNight);
+        setRoom(roomNo);
+        booking = new Booking(guest, staff, selectedRoom, firstNight, firstNight);
         bookingFacade.create(booking);
         System.out.println("Booking Done");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Booking added", ""));
+        reset();
+        return "home.xhtml?faces-redirect=true";
     }
 
+    public void reset(){
+        RequestContext.getCurrentInstance().reset("form1:grid");
+    }
+    
     public void setStaff(String username) {
         List<Useracc> ul;
         ul = useraccFacade.findAll();
@@ -127,12 +150,41 @@ public class bookingBean implements Serializable {
         }
     }
 
-    public void selectDate(){
-        getFirstNight();
-        getLastNight();
+    public void setRoom(int roomNo) {
+        System.out.println(roomNo);
+        for (int i = 0; i < rooms.size(); i++) {
+            if (roomNo == rooms.get(i).getId()) {
+                selectedRoom = rooms.get(i);
+            }
+        }
+    }
+
+    public void setGuest(String id) {
+        System.out.println(id);
+        List<Guest> gl;
+        gl = guestFacade.findAll();
+        for (int i = 0; i < gl.size(); i++) {
+            if (id.equalsIgnoreCase(Long.toString(gl.get(i).getId()))) {
+                this.guest = gl.get(i);
+            }
+        }
+    }
+
+    public void selectDate() {
+        System.out.println("Date selected");
+        System.out.println(firstNight + "" + lastNight);
+        if (firstNight != null && lastNight != null) {
+            setFirstNight(firstNight);
+            setLastNight(lastNight);
+        }
         listBookings();
     }
-    
+
+    public void selectRoom() {
+        System.out.println("Room Selected");
+        System.out.println(selectedRoom.getrNo());
+    }
+
     public Date getMin() {
         Calendar cal = Calendar.getInstance();
         cal.set(2017, 9, 1);
@@ -141,7 +193,23 @@ public class bookingBean implements Serializable {
     }
 
     public String getDateRangeString() {
-        return String.format("From: %s To: %s", formatter.format(firstNight), formatter.format(lastNight));
+        return String.format("Check in: %s \tCheck out: %s", formatter.format(firstNight), formatter.format(lastNight));
+    }
+
+    public String getRoomString() {
+        String roomNo = "No room selected";
+        if (selectedRoom != null) {
+            roomNo = String.format("Room selected: ", selectedRoom.getrNo());
+        }
+        return roomNo;
+    }
+
+    public int getRoomNo() {
+        return roomNo;
+    }
+
+    public void setRoomNo(int roomNo) {
+        this.roomNo = roomNo;
     }
 
     public UseraccFacade getUseraccFacade() {
@@ -177,11 +245,11 @@ public class bookingBean implements Serializable {
     }
 
     public Guest getName() {
-        return name;
+        return guest;
     }
 
     public void setName(Guest name) {
-        this.name = name;
+        this.guest = name;
     }
 
     public String getCusName() {
@@ -273,12 +341,7 @@ public class bookingBean implements Serializable {
     }
 
     public bookingBean() {
-        Calendar cal = Calendar.getInstance();
-        cal.set(2017, 9, 1);
-        firstNight = cal.getTime();
-        cal.set(2017, 9, 2);
-        lastNight = cal.getTime();
-        
+
     }
 
 }

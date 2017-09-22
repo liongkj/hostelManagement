@@ -78,7 +78,8 @@ public class rolesBean implements Serializable {
         if (newValue != null && !newValue.equals(oldValue)) {
             //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
             //FacesContext.getCurrentInstance().getex.addMessage(null, msg);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                    "Cell Changed", "Old: " + oldValue + ", New:" + newValue));
             //selectedAcc = useraccFacade.find(oldValue);
             FacesContext context = FacesContext.getCurrentInstance();
             Useracc u = context.getApplication().evaluateExpressionGet(context, "#{acc}", Useracc.class);

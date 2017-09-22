@@ -6,11 +6,13 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -28,16 +30,15 @@ public class Booking implements Serializable {
     
     
     
-    @OneToOne
+    
+    @ManyToOne
     private Guest bGuest;
     @OneToOne
     private Useracc staff;
     @OneToOne
     private Room bRoom;
     private String bId;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date firstNight;
-    @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastNight;
     
 

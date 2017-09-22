@@ -14,6 +14,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Guest;
 import model.GuestFacade;
@@ -25,8 +26,8 @@ import org.primefaces.context.RequestContext;
  *
  * @author KhaiKhai
  */
-@ManagedBean
-@RequestScoped
+@ManagedBean(name="customerBean")
+@ViewScoped
 public class customerBean implements Serializable {
 
     @EJB
@@ -51,11 +52,15 @@ public class customerBean implements Serializable {
     private String address;
     private int age;
     private Useracc staff;
-
+    private List<Guest> filteredCus;
+    private Guest selectedGuest;
+    
     @PostConstruct
     public void init() {
         username = (String) (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
         ageList = populateAge();
+        gl = guestFacade.findAll();
+        selectedGuest=null;
     }
 
     public String getUsername() {
@@ -103,6 +108,21 @@ public class customerBean implements Serializable {
         return true;
     }
 
+    public void editCus(Guest s){
+        System.out.println(s.getName());
+//        selectedGuest.setAddress(selectedGuest.getAddress());
+//        selectedGuest.setAge(selectedGuest.getAge());
+//        selectedGuest.setPhone(selectedGuest.getPhone());
+//        selectedGuest.setEmail(selectedGuest.getEmail());
+//        selectedGuest.setIC(selectedGuest.getIC());
+//        selectedGuest.setName(selectedGuest.getName());
+//        
+        guestFacade.edit(selectedGuest);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
+        (FacesMessage.SEVERITY_INFO, "Customer Profile updated", ""));
+        init();
+    }
+    
     public String register() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
@@ -159,9 +179,10 @@ public class customerBean implements Serializable {
         return name;
     }
 
-    public void setName(String Name) {
-        this.name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
+
 
     public String getCusID() {
         return cusID;
@@ -181,6 +202,24 @@ public class customerBean implements Serializable {
 
     public String getIC() {
         return IC;
+    }
+
+    public Guest getSelectedGuest() {
+        return selectedGuest;
+    }
+
+    public void setSelectedGuest(Guest selectedGuest) {
+        this.selectedGuest = selectedGuest;
+    }
+
+    
+    
+    public List<Guest> getFilteredCus() {
+        return filteredCus;
+    }
+
+    public void setFilteredCus(List<Guest> filteredCus) {
+        this.filteredCus = filteredCus;
     }
 
     public void setIC(String IC) {

@@ -20,7 +20,7 @@
     
     <session-config>
         <session-timeout>
-            45
+            -1
         </session-timeout>
     </session-config>
     <welcome-file-list>
