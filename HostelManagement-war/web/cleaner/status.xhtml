@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Rooms</title>
+    </h:head>
+    <h:body>
+        <ui:include src="header.xhtml"/>
+        <div align="center" style="padding:10px">
+            <h:form>
+                <p:growl id="msg" showDetail="true" escape="false" />
+                <p:dataTable id="checkboxDT" var="room" value="#{roomBean.dirty}" emptyMessage="No dirty rooms." scrollHeight="390" selection="#{roomBean.room}" rowKey="#{room.id}" style="margin-bottom:0; width:450px;height:400px;">
+                    <f:facet name="header">
+                        Rooms Status
+                    </f:facet>
+                    <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                    <p:column headerText="Room No">
+                        <h:outputText value="#{room.rNo}" />
+                    </p:column>
+                    <p:column headerText="Status" sortBy="#{room.status}" >
+                        <h:outputText value="#{room.status}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton process="checkboxDT" update="" icon="ui-icon-search" value="Cleaned" oncomplete="" />
+                    </f:facet>
+                </p:dataTable>
+
+            </h:form>
+        </div>
+    </h:body>
+</html>
+

@@ -116,7 +116,7 @@ public class bookingBean implements Serializable {
                 Date first = bookings.get(i).getfNight(); //booking table firstnight
                 Date last = bookings.get(i).getlNight();//booking table last night
 
-                if (!(       (last.compareTo(firstNight) <= 0) || (first.compareTo(lastNight) >= 0))) {
+                if (!((last.compareTo(firstNight) <= 0) || (first.compareTo(lastNight) >= 0))) {
 //                    rooms.add(bookings.get(i).getbRoom());
                     System.out.println("booking id" + bookings.get(i).getId());
                     unRoom.add(bookings.get(i).getbRoom());

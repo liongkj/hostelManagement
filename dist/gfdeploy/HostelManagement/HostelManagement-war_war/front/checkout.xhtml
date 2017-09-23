@@ -1,12 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Check Out</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <ui:include src="/front/header.xhtml"/>
+
+        <h:form id="form">
+            <p:growl id="msgs"/>
+
+            <p:dataTable id="tableStateDT" var="pay" value="#{checkOutBean.payments}" widgetVar="payTable"
+                         rows="10" paginator="true"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15"
+                         selectionMode="single" selection="#{checkOutBean.payment}" rowKey="#{pay}"
+                         emptyMessage="No Room found with given criteria" filteredValue="#{checkOutBean.filteredPayment}">
+
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Search all fields:" />
+                        <p:inputText id="globalFilter" onkeyup="PF('payTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                    </p:outputPanel>
+                </f:facet>
+
+                <p:ajax event="rowSelect" update=":form:payDetail" oncomplete="PF('payDialog').show()" />
+
+                <p:column headerText="Id" filterBy="#{pay.id}" filterMatchMode="contains">
+                    <h:outputText value="#{pay.id}" />
+                </p:column>
+
+                <p:column headerText="Room" filterBy="#{pay.room.id}" sortBy="#{pay.room.id}" filterMatchMode="contains">
+                    <h:outputText value="#{pay.room.id}" />
+                </p:column>
+
+                <p:column headerText="Name" filterBy="#{pay.guest.name}" sortBy="#{pay.guest.name}" filterMatchMode="contains">
+                    <h:outputText value="#{pay.guest.name}" />
+                </p:column>
+
+                <p:column headerText="Amount">
+                    <h:outputText value="#{pay.price}" />
+                </p:column>
+
+            </p:dataTable>
+            <p:dialog header="Payment Info" widgetVar="payDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="payDetail" style="text-align:center;">
+                    <p:panelGrid  columns="2" rendered="#{not empty checkOutBean.payment}" columnClasses="label,value">
+                        
+
+                        <h:outputText value="Id:" />
+                        <h:outputText value="#{checkOutBean.payment.id}" />
+
+                        <h:outputText value="Customr Name" />
+                        <h:outputText value="#{checkOutBean.payment.guest.name}" />
+
+                        <h:outputText value="Amount:" />
+                        <h:outputText value="#{checkOutBean.payment.price}" />
+                        
+                    </p:panelGrid>
+                </p:outputPanel>
+                <p:commandButton action="#{checkOutBean.checkOut(200.0, checkOutBean.payment)}" value="Paid" 
+                                 oncomplete="PF('payDialog').hide();" update="@forms"/>
+            </p:dialog>
+
+
+        </h:form>
     </h:body>
 </html>
 

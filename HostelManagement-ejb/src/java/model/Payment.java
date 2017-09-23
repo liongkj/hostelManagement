@@ -27,8 +27,6 @@ public class Payment implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne
-    private Booking book;
-    @ManyToOne
     private Useracc staff;
     @OneToOne
     private Guest guest;
@@ -41,7 +39,6 @@ public class Payment implements Serializable {
     }
 
     public Payment(Booking book, Useracc staff, Guest guest) {
-        this.book = book;
         this.staff = staff;
         this.guest = guest;
         this.status = "Due";
@@ -55,14 +52,6 @@ public class Payment implements Serializable {
         this.price = (int) day * room.getPRICE();
     }
     
-    public Booking getBook() {
-        return book;
-    }
-
-    public void setBook(Booking book) {
-        this.book = book;
-    }
-
     public Useracc getStaff() {
         return staff;
     }

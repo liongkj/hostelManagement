@@ -81,7 +81,7 @@ public class checkBean {
         Boolean found = false;
         List<Booking> book = new ArrayList();
         for (Booking b : bookings) {
-            if (checkInGuest.equals(b.getbGuest()) && checkBookingTime(b)) {//check booking with name
+            if (checkInGuest.equals(b.getbGuest())) {//check booking with name
                 System.out.println("Booking record found");
                 found = true;
                 book.add(b);
@@ -116,7 +116,7 @@ public class checkBean {
         Payment p =new Payment(book, staff, checkInGuest);
         System.out.println(book.getId()+ " checked In");
         bookingFacade.remove(book);
-//        paymentFacade.create(p);
+        paymentFacade.create(p);
         updateRoomstatus(book);
     }
     
@@ -129,7 +129,7 @@ public class checkBean {
             }
         }
         
-        checkInRoom.setStatus('O');
+        checkInRoom.setStatus("Occupied");
         roomFacade.edit(checkInRoom);
     }
     
@@ -187,7 +187,7 @@ public class checkBean {
      * Creates a new instance of checkBean
      */
     public checkBean() {
-        this.dt = LocalDate.parse("04/10/2017", dtf);
+        this.dt = LocalDate.parse("01/10/2017", dtf);
     }
 
 }

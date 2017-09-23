@@ -27,13 +27,14 @@ public class Room implements Serializable {
     private Long id;
     
     private String rNo;
-    private char status; //o=occupied, c=clean r=ready
+    private String status; //o=occupied, c=clean r=ready
     final private int PRICE = 100;
     
     public Room() {
     }
 
-    public Room(String rNo, char status) {
+    public Room(String rNo, String status) {
+        this.id = Long.parseLong(rNo);
         this.rNo = rNo;
         this.status = status;
         
@@ -52,11 +53,11 @@ public class Room implements Serializable {
         this.rNo = rNo;
     }
 
-    public char getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(char status) {
+    public void setStatus(String status) {
         this.status = status;
     }
         

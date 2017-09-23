@@ -63,7 +63,7 @@
                     <p:commandButton action="#{customerBean.setSelectedGuest(cus)}" update=":form2:dlg" 
                                      styleClass="no-decor" oncomplete="PF('dlg').show()" icon="ui-icon-pencil" title="Edit Info"/>
 
-                    <p:commandButton icon="ui-icon-bookmark" title="Check In" oncomplete="PF('dlg1').show()" ajax="false"
+                    <p:commandButton icon="ui-icon-bookmark" title="Check In" ajax="false"
                                      action="#{checkBean.checkIn(cus)}" update=":form:msgs :form3:bookingGrid"/>
                 </p:column>
             </p:dataTable>
@@ -91,7 +91,8 @@
                     </p:column>
 
                     <p:column style="width:32px;text-align: center">
-                        <p:commandButton update="" icon="ui-icon-key" disabled="#{checkBean.isTime(book)}" title="View" actionListener="#{checkBean.confirmCheckIn(book)}">      
+                        <p:commandButton icon="ui-icon-key" disabled="#{checkBean.isTime(book)}" title="View" 
+                                         actionListener="#{checkBean.confirmCheckIn(book)}" ajax="false">      
                             <p:confirm header="Confirmation" message="Confirm Check In?" icon="ui-icon-alert" />
                         </p:commandButton>
                     </p:column>

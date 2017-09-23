@@ -99,6 +99,12 @@ public class loginBean implements Serializable {
         if (uType=='f'||uType=='F'){
             url = "front/home.xhtml?faces-redirect=true";
         }
+        if(uType=='c' || uType=='C'){
+            url = "cleaner/home.xhtml?faces-redirect=true";
+        }
+        if (uType=='u' || uType=='U'){
+            url = "";
+        }
         return url;
      }
     
@@ -122,6 +128,9 @@ public class loginBean implements Serializable {
                 this.loguser = log;
                 //manager case
                 redirect = checkAcctype(log);
+                if("".equals(redirect)){
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Account is deactivated.","Please contact Manager to unblock account."));                   
+                }
 
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Password is Incorrect."));

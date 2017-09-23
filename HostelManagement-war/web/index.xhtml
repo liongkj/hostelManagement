@@ -12,7 +12,7 @@
     <h:body>
 
         <h:form id="loginForm">
-            
+            <p:growl id="msgs" showDetail="true"/>
             <p:panel header="APU Hostel Management System" style="margin-bottom:10px;width: 400px; margin: 0px auto">
                 <h:panelGrid columns="3" cellpadding="5">
 
@@ -27,9 +27,9 @@
                     <p:column colspan="2" />
 
 
-                    <h:commandButton value="Login" action="#{loginBean.login}" />
+                    <h:commandButton value="Login" action="#{loginBean.login}"/>
 
-                    <h:messages styleClass="errorMessage" /> <!-- Global messages -->
+                    <!--<h:messages globalOnly="true" styleClass="errorMessage" />  Global messages -->
 
                     <h:commandLink action="register.xhtml?faces-redirect=true" value="Register New User." immediate="true"/>
                 </h:panelGrid>
