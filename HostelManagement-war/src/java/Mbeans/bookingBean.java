@@ -7,6 +7,7 @@ package Mbeans;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -91,6 +92,16 @@ public class bookingBean implements Serializable {
         System.out.println("Selected user is " + guest);
     }
 
+    public void selectDate(Date f, Date l) {
+        System.out.println("booking Bean Date selected");
+        System.out.println(firstNight + "" + lastNight);
+        if (f != null && l != null) {
+            setFirstNight(f);
+            setLastNight(l);
+        }
+        listBookings();
+    }
+
     public void listBookings() {
 
         bookings = bookingFacade.findAll();
@@ -98,27 +109,26 @@ public class bookingBean implements Serializable {
         System.out.println("Searching booking table.");
         setRooms(roomFacade.findAll());
         if (bookings.isEmpty()) { //if there is no bookings
-//            availableRooms 
             System.out.println("Booking table empty");
-
             System.out.println(rooms.size());
         } else {
             for (int i = 0; i < bookings.size(); i++) {
                 Date first = bookings.get(i).getfNight(); //booking table firstnight
-                Date last =  bookings.get(i).getlNight();//booking table last night
+                Date last = bookings.get(i).getlNight();//booking table last night
 
-                if ((first.compareTo(firstNight) <= 0) && (last.compareTo(lastNight) >= 0)) {
+                if (!(       (last.compareTo(firstNight) <= 0) || (first.compareTo(lastNight) >= 0))) {
 //                    rooms.add(bookings.get(i).getbRoom());
                     System.out.println("booking id" + bookings.get(i).getId());
                     unRoom.add(bookings.get(i).getbRoom());
                 }
-                unRoom.forEach((r) -> {
-                    rooms.remove(r);
-                });
-                
             }
-            if(rooms.isEmpty())FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
-        (FacesMessage.SEVERITY_INFO, "No available room", "Please select another date"));
+            unRoom.forEach((r) -> {
+                System.out.println("Removed" + r.getrNo());
+                rooms.remove(r);
+            });
+            if (rooms.isEmpty()) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "No available room", "Please select another date"));
+            }
         }
 //        System.out.println(name.getName() + staff.getName() + selectedRoom + firstNight + lastNight);
     }
@@ -128,18 +138,18 @@ public class bookingBean implements Serializable {
         setGuest(id);
         setStaff(staffUser);
         setRoom(roomNo);
-        booking = new Booking(guest, staff, selectedRoom, firstNight, firstNight);
+        booking = new Booking(guest, staff, selectedRoom, firstNight, lastNight);
         bookingFacade.create(booking);
         System.out.println("Booking Done");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Booking added", ""));
-        reset();
+        
         return "home.xhtml?faces-redirect=true";
     }
 
-    public void reset(){
+    public void reset() {
         RequestContext.getCurrentInstance().reset("form1:grid");
     }
-    
+
     public void setStaff(String username) {
         List<Useracc> ul;
         ul = useraccFacade.findAll();
@@ -168,16 +178,6 @@ public class bookingBean implements Serializable {
                 this.guest = gl.get(i);
             }
         }
-    }
-
-    public void selectDate() {
-        System.out.println("Date selected");
-        System.out.println(firstNight + "" + lastNight);
-        if (firstNight != null && lastNight != null) {
-            setFirstNight(firstNight);
-            setLastNight(lastNight);
-        }
-        listBookings();
     }
 
     public void selectRoom() {
@@ -324,7 +324,8 @@ public class bookingBean implements Serializable {
         this.bookings = bookings;
     }
 
-    public Date getFirstNight() {
+    public Date getFirstNight() throws ParseException {
+
         return firstNight;
     }
 

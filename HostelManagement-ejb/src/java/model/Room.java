@@ -6,10 +6,13 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -26,7 +29,7 @@ public class Room implements Serializable {
     private String rNo;
     private char status; //o=occupied, c=clean r=ready
     final private int PRICE = 100;
-
+    
     public Room() {
     }
 
@@ -56,10 +59,7 @@ public class Room implements Serializable {
     public void setStatus(char status) {
         this.status = status;
     }
-    
-
-    
-    
+        
     public Long getId() {
         return id;
     }

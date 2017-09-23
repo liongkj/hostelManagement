@@ -20,20 +20,21 @@ import sun.security.validator.ValidatorException;
 public class DateRangeValidator implements Validator {
 
     @Override
-    public void validate(FacesContext context,
-            UIComponent uiComponent, Object o) {
+    public void validate(FacesContext context, UIComponent uiComponent, Object o) {
         UIInput startDateInput = (UIInput) uiComponent.getAttributes().get("startDateAttr");
         Date startDate = (Date) startDateInput.getValue();
         Date endDate = (Date) o;
 
-        if (endDate.compareTo(startDate) == 0) {
+        if (endDate.compareTo(startDate) == 0)  {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid date selected", "Check In date cannot be same with Check Out date."));
+        }
+        else if (endDate.before(startDate)) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(
+                            "Invalid start/end dates.",
+                            "Start date cannot be after end date."));
 
-            if (endDate.before(startDate)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid date selected", "Check In date cannot be after Check Out date."));
-
-            }
-        } else {
+        } 
+        else {
             RequestContext c = RequestContext.getCurrentInstance();
             c.execute("PF('dateRangeDlg').hide();");
 //            c.execute("location.reload();");

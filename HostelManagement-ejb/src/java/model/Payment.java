@@ -6,6 +6,8 @@
 package model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Period;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,16 +32,27 @@ public class Payment implements Serializable {
     private Useracc staff;
     @OneToOne
     private Guest guest;
+    @OneToOne
+    private Room room;
     private int price;
+    private String status;
 
     public Payment() {
     }
 
-    public Payment(Booking book, Useracc staff, Guest guest, int price) {
+    public Payment(Booking book, Useracc staff, Guest guest) {
         this.book = book;
         this.staff = staff;
         this.guest = guest;
-        this.price = price;
+        this.status = "Due";
+        this.room = book.getbRoom();
+        setPrice(book);
+    }
+    
+    public final void setPrice(Booking b) {
+        long diff =  b.getLastNight().getTime()-b.getFirstNight().getTime();
+        float day = (diff / (1000*60*60*24));
+        this.price = (int) day * room.getPRICE();
     }
     
     public Booking getBook() {
@@ -58,6 +71,22 @@ public class Payment implements Serializable {
         this.staff = staff;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Guest getGuest() {
         return guest;
     }
@@ -69,13 +98,6 @@ public class Payment implements Serializable {
     public int getPrice() {
         return price;
     }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    
-    
     
     public Long getId() {
         return id;

@@ -29,16 +29,20 @@ public class Booking implements Serializable {
     private Long id;
     
     
-    
-    
-    @ManyToOne
+    @OneToOne
     private Guest bGuest;
     @OneToOne
     private Useracc staff;
+    
+    
+    
     @OneToOne
     private Room bRoom;
     private String bId;
+    
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date firstNight;
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastNight;
     
 
@@ -54,8 +58,14 @@ public class Booking implements Serializable {
         this.lastNight = lNight;
     }
 
-    
-    
+    public Room getbRoom() {
+        return bRoom;
+    }
+
+    public void setbRoom(Room bRoom) {
+        this.bRoom = bRoom;
+    }
+
     public String getbId() {
         return bId;
     }
@@ -73,6 +83,7 @@ public class Booking implements Serializable {
     }
 
     public Date getfNight() {
+        
         return firstNight;
     }
 
@@ -88,13 +99,23 @@ public class Booking implements Serializable {
         this.lastNight = lNight;
     }
 
-    public Room getbRoom() {
-        return bRoom;
+    public Date getFirstNight() {
+        return firstNight;
     }
 
-    public void setbRoom(Room bRoom) {
-        this.bRoom = bRoom;
+    public void setFirstNight(Date firstNight) {
+        this.firstNight = firstNight;
     }
+
+    public Date getLastNight() {
+        return lastNight;
+    }
+
+    public void setLastNight(Date lastNight) {
+        this.lastNight = lastNight;
+    }
+
+    
 
     public Useracc getStaff() {
         return staff;

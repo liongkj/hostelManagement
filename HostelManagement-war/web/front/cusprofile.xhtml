@@ -19,7 +19,7 @@
 
         <h:form id="form">
             <p:growl id="msgs"/>
-            <p:dataTable var="cus" value="#{customerBean.gl}" widgetVar="cusTable"
+            <p:dataTable var="cus" id="cusGrid" value="#{customerBean.gl}" widgetVar="cusTable" paginator="true" rows="3" 
                          emptyMessage="No customer find with the critiria" filteredValue="#{customerBean.filteredCus}">
 
                 <f:facet name="header">
@@ -62,14 +62,53 @@
                 <p:column style="text-align: center" headerText="Action">
                     <p:commandButton action="#{customerBean.setSelectedGuest(cus)}" update=":form2:dlg" 
                                      styleClass="no-decor" oncomplete="PF('dlg').show()" icon="ui-icon-pencil" title="Edit Info"/>
-                    <p:commandButton icon="ui-icon-key" title="Check In" oncomplete="PF('dlg1').show()" action="#{checkBean.checkIn(cus)}" update=":form:msgs"/>
+
+                    <p:commandButton icon="ui-icon-bookmark" title="Check In" oncomplete="PF('dlg1').show()" ajax="false"
+                                     action="#{checkBean.checkIn(cus)}" update=":form:msgs :form3:bookingGrid"/>
                 </p:column>
             </p:dataTable>
+
+        </h:form>
+
+        <h:form id="form3">
+            <h:panelGrid id="bookingGrid" columns="2" cellpadding="5">
+                <p:dataTable id="basicDT" var="book" value="#{checkBean.bookings}" scrollable="true" scrollHeight="200" >
+                    <f:facet name="header">
+                        Booking slots <br/>#{checkBean.checkInGuest.name}
+                    </f:facet>
+                    <p:column headerText="Booking ID">
+                        <div align="center"><h:outputText value="#{book.id}" /></div>
+                    </p:column>
+                    <p:column headerText="Check In Date">
+                        <div align="center"><h:outputText value="#{book.firstNight}" /></div>
+                    </p:column>
+                    <p:column headerText="Check out Date">
+                        <div align="center"><h:outputText value="#{book.lastNight}" /></div>
+                    </p:column>
+
+                    <p:column headerText="Room Number">
+                        <div align="center"><h:outputText value="#{book.bRoom.id}" /></div>
+                    </p:column>
+
+                    <p:column style="width:32px;text-align: center">
+                        <p:commandButton update="" icon="ui-icon-key" disabled="#{checkBean.isTime(book)}" title="View" actionListener="#{checkBean.confirmCheckIn(book)}">      
+                            <p:confirm header="Confirmation" message="Confirm Check In?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+
+            </h:panelGrid>
+
         </h:form>
 
         <h:form id="form2">
+            
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
+            
             <p:dialog header="Edit Customer Details" id="dlg" widgetVar="dlg" resizable="false">
-
                 <h:panelGrid columns="2" cellpadding="5">
                     <h:outputLabel for="name" value="Name:"/>
                     <p:inputText id="name" required="true" value="#{customerBean.selectedGuest.name}"/>
@@ -83,7 +122,7 @@
                     <h:outputText value="Email:"/>
                     <p:inputText required="true" value="#{customerBean.selectedGuest.email}"/>
 
-                    <h:outputText value="phone"/>
+                    <h:outputText value="Phone:"/>
                     <p:inputText id="phone" required="true" value="#{customerBean.selectedGuest.phone}" > 
                         <f:validateRegex pattern="^([+]?[\d]{10,11}+)?$" />
                     </p:inputText>
@@ -95,22 +134,6 @@
                     </f:facet>  
                 </h:panelGrid>
             </p:dialog>
-
-            <p:dialog header="Edit Customer Details" rendered="#{true}" id="dlg1" widgetVar="dlg1" resizable="false">
-
-                <h:panelGrid columns="2" cellpadding="5">
-                    <h:outputLabel for="name" value="Name:"/>
-                    <p:selectOneMenu value="#{checkBean.booking}">
-                        <f:selectItems value="#{checkBean.bookings}"/>
-                    </p:selectOneMenu>
-                    <f:facet name="footer">
-                        <p:button value="Cancel" onclick="PF('dlg1').hide();" />
-                        <p:commandButton value="Save" update=":form" action="#{customerBean.editCus(customerBean.selectedGuest)}"
-                                         oncomplete="PF('dlg1').hide()" style="float:right;" />
-                    </f:facet>  
-                </h:panelGrid>
-            </p:dialog>
-
         </h:form>
     </h:body>
 </html>

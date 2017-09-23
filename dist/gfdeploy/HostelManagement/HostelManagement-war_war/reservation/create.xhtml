@@ -24,23 +24,20 @@
                     <p:column/>
 
                     <p:outputLabel for="dateSelectBtn" value="Booking Date:"/>
-                    <p:commandButton id="dateSelectBtn" value="Booking Date" type="button"
+                    <p:commandButton id="dateSelectBtn" value="Booking Date" type="button" ajax="false"
                                      onclick="PF('dateRangeDlg').show();"/>
                     <p:outputLabel id="lblDate" value="#{bookingBean.dateRangeString}"/>
 
                     <p:outputLabel  value="Booking Room:"/>
-                    
+
                     <h:panelGrid id="roomSelectBtn" columns="2" style="margin-bottom:10px" cellpadding="5">
                         <p:outputLabel for="room" value="Room " />
-                        <p:selectOneListbox id="room" value="#{bookingBean.roomNo}">
+                        <p:selectOneListbox id="room" value="#{bookingBean.roomNo}" scrollHeight="200">
                             <f:selectItems value="#{bookingBean.rooms}" var="r" itemLabel="#{r.id}" itemValue="#{r.id}"/>
-                            
                         </p:selectOneListbox>
-
                     </h:panelGrid>
                     <p:column/>
                     <p:commandButton value="Submit" style="float:right" action="#{bookingBean.confirmBooking}" update="msgs @form"/>
-
                 </h:panelGrid>
 
 
@@ -52,21 +49,21 @@
 
                             <p:calendar required="true" id="idStartDate" binding="#{startDate}"
                                         value="#{bookingBean.firstNight}" mindate="#{bookingBean.min}">
-                                <p:ajax process="idStartDate" partialSubmit="true" event="change"/>  
+                                <!--<p:ajax process="idStartDate" partialSubmit="true" event="change"/>-->  
                             </p:calendar>
 
                             <p:calendar required="true" id="idEndDate" value="#{bookingBean.lastNight}" mindate="#{bookingBean.min}">
-                                <p:ajax process="idEndDate" partialSubmit="true" event="change"/>
+                                <!--<p:ajax process="idEndDate" partialSubmit="true" event="change"/>-->
                                 <f:validator validatorId="dateRangeValidator"/>
                                 <f:attribute name="startDateAttr" value="#{startDate}"/>
                             </p:calendar>
                             <br/>
                             <p:messages autoUpdate="true" showDetail="true"/>
                             <br/>
-                            <p:commandButton value="Save" icon="ui-icon-check"  action="#{bookingBean.selectDate()}" update=":form1:lblDate :form1"/>
-                            <p:commandButton value="Cancel" icon="ui-icon-close"
+                            <p:commandButton value="Save" icon="ui-icon-check" action="#{bookingBean.selectDate(idStartDate,idEndDate)}" update=":form1:lblDate :form1:msgs :form1:room"/>
+<!--                            <p:commandButton value="Cancel" icon="ui-icon-close"
                                              immediate="true"
-                                             onclick="PF('dateRangeDlg').hide()"/>
+                                             onclick="PF('dateRangeDlg').hide()"/>-->
                         </h:form>
                     </p:outputPanel>
                 </p:dialog>

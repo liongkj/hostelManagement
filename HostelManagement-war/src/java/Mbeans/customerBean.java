@@ -120,7 +120,7 @@ public class customerBean implements Serializable {
         guestFacade.edit(selectedGuest);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage
         (FacesMessage.SEVERITY_INFO, "Customer Profile updated", ""));
-        init();
+//        init();
     }
     
     public String register() {

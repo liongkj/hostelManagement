@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -18,8 +19,12 @@ import javax.faces.context.FacesContext;
 import model.Booking;
 import model.BookingFacade;
 import model.Guest;
+import model.Payment;
+import model.PaymentFacade;
 import model.Room;
 import model.RoomFacade;
+import model.Useracc;
+import model.UseraccFacade;
 
 /**
  *
@@ -30,15 +35,23 @@ import model.RoomFacade;
 public class checkBean {
 
     @EJB
-    private RoomFacade roomFacade;
+    private UseraccFacade useraccFacade;
 
     @EJB
-    private BookingFacade bookingFacade;
+    private PaymentFacade paymentFacade;
 
+    @EJB
+    private RoomFacade roomFacade;
+    
+    @EJB
+    private BookingFacade bookingFacade;
+    
     private Guest checkInGuest;
     private List<Booking> bookings;
     private List<Booking> temp;
     
+    private String staffUser;
+    private Useracc staff;
     private Room checkInRoom;
     private Booking booking;
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -48,6 +61,7 @@ public class checkBean {
     public void init() {
         bookings = bookingFacade.findAll();
         System.out.println("refresh checkBean");
+        staffUser = (String) (FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("username"));
     }
 
     public void checkIn(Guest cig) {
@@ -55,29 +69,29 @@ public class checkBean {
         setCheckInGuest(cig);
         System.out.println(checkInGuest.getName());
         if (checkBookingCus(cig)) {
-
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Choose booking record.", ""));
-
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "No Booking record found with this customer.", ""));
         }
+        
     }
-
+    
     public Boolean checkBookingCus(Guest cig) {
         Boolean found = false;
-
+        List<Booking> book = new ArrayList();
         for (Booking b : bookings) {
             if (checkInGuest.equals(b.getbGuest()) && checkBookingTime(b)) {//check booking with name
                 System.out.println("Booking record found");
                 found = true;
-                temp.add(b);
+                book.add(b);
             }
+            setBookings(book);
         }
         return found;
     }
 
-    public Boolean checkBookingTime(Booking b) {//check timing
+    public Boolean checkBookingTime(Booking b) {//check timing - disable button?
         Boolean found = false;
 //        for (Booking B : b) {
         LocalDate checkIn = new java.sql.Date(b.getfNight().getTime()).toLocalDate();
@@ -91,6 +105,44 @@ public class checkBean {
         return found;
     }
 
+    public Boolean isTime(Booking book){
+       LocalDate checkIn = new java.sql.Date(book.getFirstNight().getTime()).toLocalDate();
+       return !(checkIn.compareTo(dt)==0);
+    }
+    
+    public void confirmCheckIn(Booking book){
+        setStaff(staffUser);
+        setCheckInGuest(book.getbGuest());
+        Payment p =new Payment(book, staff, checkInGuest);
+        System.out.println(book.getId()+ " checked In");
+        bookingFacade.remove(book);
+//        paymentFacade.create(p);
+        updateRoomstatus(book);
+    }
+    
+    public void updateRoomstatus(Booking b){
+        Long no = b.getbRoom().getId();
+        List<Room> r = roomFacade.findAll();
+        for (Room room:r){
+            if(Objects.equals(room.getId(), no)){
+                checkInRoom = room;
+            }
+        }
+        
+        checkInRoom.setStatus('O');
+        roomFacade.edit(checkInRoom);
+    }
+    
+    public void setStaff(String username) {
+        List<Useracc> ul;
+        ul = useraccFacade.findAll();
+        for (int i = 0; i < ul.size(); i++) {
+            if (username.equals(ul.get(i).getUsername())) {
+                this.staff = ul.get(i);
+            }
+        }
+    }
+    
     public Booking getBooking() {
         return booking;
     }
@@ -135,7 +187,7 @@ public class checkBean {
      * Creates a new instance of checkBean
      */
     public checkBean() {
-        this.dt = LocalDate.parse("01/10/2017", dtf);
+        this.dt = LocalDate.parse("04/10/2017", dtf);
     }
 
 }
