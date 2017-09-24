@@ -160,11 +160,14 @@
         </style>
     </head>
     <body>
+        
         <% HttpSession s = request.getSession(false);
             Payment p = (Payment) s.getAttribute("payment");
 
         %>
+        <input type="button" Value="Back" onclick="..history.back()"/>
         <header>
+            
             <h1>Receipt</h1>
             <address>
 

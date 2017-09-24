@@ -53,8 +53,9 @@ public class accountBean implements Serializable {
     private String IC;
     private String address;
     private Useracc loggedUser;
-
-    public accountBean(String name, String username, String password, String email, String department, String phoneNo, String IC, String address) {
+    private String gender;
+    
+    public accountBean(String name, String username, String password, String email, String department, String phoneNo, String IC, String address, String gender) {
         this.username = username;
         this.name = name;
         this.password = password;
@@ -63,6 +64,7 @@ public class accountBean implements Serializable {
         this.phoneNo = phoneNo;
         this.IC = IC;
         this.address = address;
+        this.gender = gender;
 
     }
 
@@ -140,6 +142,14 @@ public class accountBean implements Serializable {
         this.IC = IC;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -164,7 +174,7 @@ public class accountBean implements Serializable {
         String redirect = "index.xhtml?faces-redirect=true";
         if (checkUsername(username)) {
             if (!department.equals("-")) {
-                Useracc a = new Useracc(name, username, password, email, department, phoneNo, IC, address);
+                Useracc a = new Useracc(name, username, password, email, department, phoneNo, IC, address,gender);
                 useraccFacade.create(a);
 
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User Registered"));
@@ -186,7 +196,7 @@ public class accountBean implements Serializable {
         String redirect = null;
         if (checkUsername(username)) {
             if (!department.equals("-")) {
-                Useracc a = new Useracc(name, username, password, email, department, phoneNo, IC, address);
+                Useracc a = new Useracc(name, username, password, email, department, phoneNo, IC, address, gender);
                 useraccFacade.create(a);
                 reset();
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("User Registered"));

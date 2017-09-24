@@ -31,11 +31,12 @@ public class Useracc implements Serializable {
     private String phoneNo;
     private String IC;
     private String address;
+    private String gender;
 
     public Useracc() {
     }
 
-    public Useracc(String name,String username, String password, String email, String department, String phoneNo, String IC, String address) {
+    public Useracc(String name,String username, String password, String email, String department, String phoneNo, String IC, String address,String gender) {
         this.name = name;
         this.username = username;
         this.password = password;
@@ -44,6 +45,7 @@ public class Useracc implements Serializable {
         this.phoneNo = phoneNo;
         this.IC = IC;
         this.address = address;
+        this.gender = gender;
     }
 
     
@@ -85,6 +87,14 @@ public class Useracc implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
     
     public void setUsername(String username) {
