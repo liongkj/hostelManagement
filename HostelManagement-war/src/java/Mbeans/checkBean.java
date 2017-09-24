@@ -113,14 +113,18 @@ public class checkBean {
     public void confirmCheckIn(Booking book){
         setStaff(staffUser);
         setCheckInGuest(book.getbGuest());
-        Payment p =new Payment(book, staff, checkInGuest);
+        Payment p = new Payment(book, staff, checkInGuest);
         System.out.println(book.getId()+ " checked In");
         bookingFacade.remove(book);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer is checked In.", ""));
         paymentFacade.create(p);
         updateRoomstatus(book);
+        
+        init();
     }
     
     public void updateRoomstatus(Booking b){
+        System.out.println("room status updated.");
         Long no = b.getbRoom().getId();
         List<Room> r = roomFacade.findAll();
         for (Room room:r){

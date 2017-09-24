@@ -11,9 +11,10 @@
     <h:body>
         <ui:include src="header.xhtml"/>
         <div align="center" style="padding:10px">
-            <h:form>
+            <h:form id="form">
                 <p:growl id="msg" showDetail="true" escape="false" />
-                <p:dataTable id="checkboxDT" var="room" value="#{roomBean.dirty}" emptyMessage="No dirty rooms." scrollHeight="390" selection="#{roomBean.room}" rowKey="#{room.id}" style="margin-bottom:0; width:450px;height:400px;">
+                <p:dataTable id="checkboxDT" var="room" value="#{roomBean.dirty}" 
+                             emptyMessage="No dirty rooms." scrollHeight="390" selection="#{roomBean.rooms}" rowKey="#{room.id}" style="margin-bottom:0; width:450px;height:400px;">
                     <f:facet name="header">
                         Rooms Status
                     </f:facet>
@@ -26,7 +27,7 @@
                     </p:column>
 
                     <f:facet name="footer">
-                        <p:commandButton process="checkboxDT" update="" icon="ui-icon-search" value="Cleaned" oncomplete="" />
+                        <p:commandButton process="checkboxDT" update=":form:msg :form:checkboxDT" action="#{roomBean.cleanRoom()}" icon="ui-icon-search" value="Cleaned" oncomplete="" />
                     </f:facet>
                 </p:dataTable>
 

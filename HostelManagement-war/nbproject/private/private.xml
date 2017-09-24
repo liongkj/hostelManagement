@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/src/java/Mbeans/loginBean.java</file>
-            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/web/cleaner/status.xhtml</file>
-            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/src/java/Mbeans/roomBean.java</file>
+            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/web/front/checkout.xhtml</file>
+            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/web/manager/report.xhtml</file>
+            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/src/java/Mbeans/checkOutBean.java</file>
+            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/web/front/receipt.jsp</file>
+            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/src/java/controller/receipt.java</file>
+            <file>file:/Users/kj/NetBeansProjects/hostelManagement/HostelManagement-war/src/java/controller/ChartView.java</file>
         </group>
     </open-files>
 </project-private>

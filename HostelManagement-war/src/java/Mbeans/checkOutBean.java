@@ -5,18 +5,24 @@
  */
 package Mbeans;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import model.Booking;
 import model.BookingFacade;
 import model.Guest;
@@ -26,6 +32,7 @@ import model.Room;
 import model.RoomFacade;
 import model.Useracc;
 import model.UseraccFacade;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -62,6 +69,7 @@ public class checkOutBean {
 
     public void updateRoomstatus(Payment p) {
         Long no = p.getRoom().getId();
+
         List<Room> r = roomFacade.findAll();
         for (Room room : r) {
             if (Objects.equals(room.getId(), no)) {
@@ -70,13 +78,28 @@ public class checkOutBean {
         }
         checkInRoom.setStatus("To be cleaned");
         roomFacade.edit(checkInRoom);
+        System.out.println("Room status updated");
     }
 
     public void checkOut(double pay, Payment p) {
 //        if(makePayment(pay,p)){
         updatePayment(p);
         // }
-//        updateRoomstatus(p);
+        updateRoomstatus(p);
+
+        init();
+
+        receipt(p);
+    }
+
+    public void receipt(Payment p) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("window.open('../front/receipt.jsp', '_newtab')");
+        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        req.getSession();
+        HttpSession s = req.getSession();
+        s.setAttribute("payment", p);
+
     }
 
     public Boolean makePayment(double pay, Payment p) {
@@ -96,6 +119,8 @@ public class checkOutBean {
         Payment temp = paymentFacade.find(p.getId());
         temp.setStatus("Paid");
         paymentFacade.edit(temp);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+                "Customer checkout successfully", ""));
     }
 
     public void sendReceipt() {
@@ -120,12 +145,13 @@ public class checkOutBean {
 
     public List<Payment> getPayments() {
         List<Payment> temp = new ArrayList();
-        for(Payment p:payments){
-            if(p.getStatus().equalsIgnoreCase("Due")){
+        for (Payment p : payments) {
+            if (p.getStatus().equalsIgnoreCase("Due")) {
                 temp.add(p);
             }
         }
-        return temp;
+//        return temp;
+        return payments;
     }
 
     public double getPaid() {
@@ -139,7 +165,6 @@ public class checkOutBean {
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
-
 
     public String getStaffUser() {
         return staffUser;

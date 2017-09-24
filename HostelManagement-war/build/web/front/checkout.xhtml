@@ -63,8 +63,12 @@
                         
                     </p:panelGrid>
                 </p:outputPanel>
-                <p:commandButton action="#{checkOutBean.checkOut(200.0, checkOutBean.payment)}" value="Paid" 
-                                 oncomplete="PF('payDialog').hide();" update="@forms"/>
+                <p:commandButton action="#{checkOutBean.checkOut(200.0, checkOutBean.payment)}" value="Paid" update="msgs tableStateDT"
+                                 oncomplete="PF('payDialog').hide();">
+                   
+                </p:commandButton>
+                    
+                
             </p:dialog>
 
 

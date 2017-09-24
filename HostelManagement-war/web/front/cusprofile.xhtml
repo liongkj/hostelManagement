@@ -18,7 +18,7 @@
         <ui:include src="/front/header.xhtml"/>
 
         <h:form id="form">
-            <p:growl id="msgs"/>
+            <p:growl id="msgs" autoUpdate="true"/>
             <p:dataTable var="cus" id="cusGrid" value="#{customerBean.gl}" widgetVar="cusTable" paginator="true" rows="3" 
                          emptyMessage="No customer find with the critiria" filteredValue="#{customerBean.filteredCus}">
 
@@ -67,10 +67,6 @@
                                      action="#{checkBean.checkIn(cus)}" update=":form:msgs :form3:bookingGrid"/>
                 </p:column>
             </p:dataTable>
-
-        </h:form>
-
-        <h:form id="form3">
             <h:panelGrid id="bookingGrid" columns="2" cellpadding="5">
                 <p:dataTable id="basicDT" var="book" value="#{checkBean.bookings}" scrollable="true" scrollHeight="200" >
                     <f:facet name="header">
@@ -79,11 +75,15 @@
                     <p:column headerText="Booking ID">
                         <div align="center"><h:outputText value="#{book.id}" /></div>
                     </p:column>
-                    <p:column headerText="Check In Date">
-                        <div align="center"><h:outputText value="#{book.firstNight}" /></div>
+                    <p:column headerText="Check In Date" sortBy="#{book.firstNight}">
+                        <div align="center"><h:outputText value="#{book.firstNight}" >
+                                <f:convertDateTime pattern="d-M-yyyy" />
+                            </h:outputText></div>
                     </p:column>
                     <p:column headerText="Check out Date">
-                        <div align="center"><h:outputText value="#{book.lastNight}" /></div>
+                        <div align="center"><h:outputText value="#{book.lastNight}" >
+                                <f:convertDateTime pattern="d-M-yyyy" />
+                            </h:outputText></div>
                     </p:column>
 
                     <p:column headerText="Room Number">
@@ -92,23 +92,30 @@
 
                     <p:column style="width:32px;text-align: center">
                         <p:commandButton icon="ui-icon-key" disabled="#{checkBean.isTime(book)}" title="View" 
-                                         actionListener="#{checkBean.confirmCheckIn(book)}" ajax="false">      
-                            <p:confirm header="Confirmation" message="Confirm Check In?" icon="ui-icon-alert" />
+                                         actionListener="#{checkBean.confirmCheckIn(book)}" update=":form:msgs :form:bookingGrid">      
+                            <!--                            <p:confirm header="Confirmation" message="Confirm Check In?" icon="ui-icon-alert" />-->
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
 
             </h:panelGrid>
+        </h:form>
+
+        <h:form id="form3">
+
 
         </h:form>
 
         <h:form id="form2">
-            
+
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+
+                </p:commandButton>
+
                 <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
             </p:confirmDialog>
-            
+
             <p:dialog header="Edit Customer Details" id="dlg" widgetVar="dlg" resizable="false">
                 <h:panelGrid columns="2" cellpadding="5">
                     <h:outputLabel for="name" value="Name:"/>

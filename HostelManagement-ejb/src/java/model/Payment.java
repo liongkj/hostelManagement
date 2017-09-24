@@ -8,12 +8,14 @@ package model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -35,6 +37,9 @@ public class Payment implements Serializable {
     private int price;
     private String status;
 
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date paid;
+    
     public Payment() {
     }
 
@@ -44,6 +49,7 @@ public class Payment implements Serializable {
         this.status = "Due";
         this.room = book.getbRoom();
         setPrice(book);
+        this.paid = book.getlNight();
     }
     
     public final void setPrice(Booking b) {

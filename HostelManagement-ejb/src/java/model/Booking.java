@@ -38,12 +38,14 @@ public class Booking implements Serializable {
     
     @OneToOne
     private Room bRoom;
-    private String bId;
+    
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date firstNight;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date lastNight;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date bookDate;
     
 
     public Booking() {
@@ -51,6 +53,7 @@ public class Booking implements Serializable {
     }
 
     public Booking(Guest bGuest, Useracc staff, Room bRoom, Date fNight, Date lNight) {
+        this.bookDate = new Date();
         this.bGuest = bGuest;
         this.staff = staff;
         this.bRoom = bRoom;
@@ -64,14 +67,6 @@ public class Booking implements Serializable {
 
     public void setbRoom(Room bRoom) {
         this.bRoom = bRoom;
-    }
-
-    public String getbId() {
-        return bId;
-    }
-
-    public void setbId(String bId) {
-        this.bId = bId;
     }
 
     public Guest getbGuest() {
