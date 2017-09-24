@@ -36,7 +36,7 @@ public class roomBean {
     }
 
     public void addRoom() {
-        String level = "20";
+        String level = "30";
 
         for (int i = 1; i < 10; i++) {
             String lbl = level + Integer.toString(i);
