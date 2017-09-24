@@ -8,15 +8,15 @@ import model.Guest;
 import model.Room;
 import model.Useracc;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-09-23T02:05:50")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-09-24T21:03:37")
 @StaticMetamodel(Booking.class)
 public class Booking_ { 
 
+    public static volatile SingularAttribute<Booking, Date> bookDate;
     public static volatile SingularAttribute<Booking, Room> bRoom;
     public static volatile SingularAttribute<Booking, Useracc> staff;
     public static volatile SingularAttribute<Booking, Long> id;
     public static volatile SingularAttribute<Booking, Guest> bGuest;
-    public static volatile SingularAttribute<Booking, String> bId;
     public static volatile SingularAttribute<Booking, Date> firstNight;
     public static volatile SingularAttribute<Booking, Date> lastNight;
 

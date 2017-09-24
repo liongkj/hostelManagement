@@ -78,6 +78,14 @@ public class Payment implements Serializable {
         this.room = room;
     }
 
+    public Date getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Date paid) {
+        this.paid = paid;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }

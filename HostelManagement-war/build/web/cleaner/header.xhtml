@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title></title>
+        <link href="../resource/css/demo.css" rel="stylesheet" type="text/css"/>
+        <link href="../resource/css/header-user-dropdown.css" rel="stylesheet" type="text/css"/>
+        <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'/>
+
+    </h:head>
+    <h:body>
+        <h:form>
+            <header class="header-user-dropdown">
+
+                <div class="header-limiter">
+                    <h1><a href="home.jsf">APU<span>Hostel</span></a></h1>
+
+                    <nav>
+                        <a href="#">Overview</a>
+                        <h:commandLink value="Room Status" action="/cleaner/status.xhtml?faces-redirect=true"/>
+                        
+                    </nav>
+
+
+                    <div class="header-user-menu">
+                        <img src="../resource/img/usericon.png" alt=""/>
+
+                        <ul>
+                            <li><a href="profile.jsf">Edit Profile</a></li>
+                            <p:commandButton action="#{loginBean.logout()}" value="Logout"/>
+
+                        </ul>
+                    </div>
+
+                </div>
+
+            </header>
+        </h:form>
+        <!-- The content of your page would go here. -->
+
+
+
+        <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+        <script >
+
+            $(document).ready(function () {
+
+                var userMenu = $('.header-user-dropdown .header-user-menu');
+
+                userMenu.on('touchend', function (e) {
+
+                    userMenu.addClass('show');
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                });
+
+                // This code makes the user dropdown work on mobile devices
+
+                $(document).on('touchend', function (e) {
+
+                    // If the page is touched anywhere outside the user menu, close it
+                    userMenu.removeClass('show');
+
+                });
+
+            });
+
+        </script>
+    </h:body>
+
+</html>
+

@@ -51,6 +51,7 @@ public class customerBean implements Serializable {
     private String phone;
     private String address;
     private int age;
+    private String gender;
     private Useracc staff;
     private List<Guest> filteredCus;
     private Guest selectedGuest;
@@ -71,7 +72,7 @@ public class customerBean implements Serializable {
         this.username = username;
     }
 
-    public customerBean(String name, String cusID, String email, String IC, String phone, String address, int age) {
+    public customerBean(String name, String cusID, String email, String IC, String phone, String address, int age, String gender) {
         this.name = name;
         this.cusID = cusID;
         this.email = email;
@@ -79,6 +80,7 @@ public class customerBean implements Serializable {
         this.phone = phone;
         this.address = address;
         this.age = age;
+        this.gender = gender;
     }
 
     public List<Integer> populateAge() {
@@ -130,7 +132,7 @@ public class customerBean implements Serializable {
         if (checkName(name)) {
             //maybe validate IC
             setStaff(username);
-            Guest g = new Guest(name, cusID, email, IC, phone, address, age, staff);
+            Guest g = new Guest(name, cusID, email, IC, phone, address, age, staff,gender);
             guestFacade.create(g);
             System.out.println(staff.getUsername());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer Registered"));
@@ -240,6 +242,14 @@ public class customerBean implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public int getAge() {

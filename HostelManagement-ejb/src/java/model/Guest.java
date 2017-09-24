@@ -34,12 +34,13 @@ public class Guest implements Serializable {
     private int age;
     @ManyToOne
     private Useracc staff;
+    private String gender;
     
 
     public Guest() {
     }
 
-    public Guest(String Name, String cusID, String email, String IC, String phone, String address, int age, Useracc staff) {
+    public Guest(String Name, String cusID, String email, String IC, String phone, String address, int age, Useracc staff,String gender) {
         this.Name = Name;
         this.cusID = cusID;
         this.email = email;
@@ -48,6 +49,7 @@ public class Guest implements Serializable {
         this.address = address;
         this.age = age;
         this.staff = staff;
+        this.gender = gender;
     }
 
     
@@ -61,6 +63,14 @@ public class Guest implements Serializable {
 
     public String getCusID() {
         return cusID;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public void setCusID(String cusID) {

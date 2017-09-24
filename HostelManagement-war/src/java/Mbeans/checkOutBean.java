@@ -21,6 +21,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import model.Booking;
@@ -93,8 +94,19 @@ public class checkOutBean {
     }
 
     public void receipt(Payment p) {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("window.open('../front/receipt.jsp', '_newtab')");
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        context.execute("window.open('../controller/receipt', '_newtab')");
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ServletContext sc = (ServletContext) fc.getExternalContext().getContext();
+        try {
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(ec.getRequestContextPath() + "/receipt");
+
+        } catch (IOException ex) {
+            Logger.getLogger(checkOutBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 //        req.getSession();
         HttpSession s = req.getSession();
@@ -150,8 +162,8 @@ public class checkOutBean {
                 temp.add(p);
             }
         }
-//        return temp;
-        return payments;
+        return temp;
+
     }
 
     public double getPaid() {

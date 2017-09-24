@@ -25,6 +25,7 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.MeterGaugeChartModel;
+import org.primefaces.model.chart.PieChartModel;
 
 @ManagedBean
 public class ChartView implements Serializable {
@@ -39,7 +40,7 @@ public class ChartView implements Serializable {
     private PaymentFacade paymentFacade;
     
     
-
+    private PieChartModel pieModel1;
     private LineChartModel lineModel1;
     private MeterGaugeChartModel meterGaugeModel2;
 
@@ -47,6 +48,7 @@ public class ChartView implements Serializable {
     public void init() {
         createLineModels();
         createMeterGaugeModels();
+        createPieModels();
     }
 
     public LineChartModel getLineModel1() {
@@ -55,6 +57,10 @@ public class ChartView implements Serializable {
 
      public MeterGaugeChartModel getMeterGaugeModel2() {
         return meterGaugeModel2;
+    }
+     
+     public PieChartModel getPieModel1() {
+        return pieModel1;
     }
      
     private void createLineModels() {
@@ -129,7 +135,21 @@ public class ChartView implements Serializable {
         return new MeterGaugeChartModel(noDirty, intervals);
     }
  
+    private void createPieModels() {
+        createPieModel1();
+        
+    }
     
- 
+    private void createPieModel1() {
+        pieModel1 = new PieChartModel();
+         
+        pieModel1.set("Brand 1", 540);
+        pieModel1.set("Brand 2", 325);
+        pieModel1.set("Brand 3", 702);
+        pieModel1.set("Brand 4", 421);
+         
+        pieModel1.setTitle("Simple Pie");
+        pieModel1.setLegendPosition("w");
+    }
 
 }

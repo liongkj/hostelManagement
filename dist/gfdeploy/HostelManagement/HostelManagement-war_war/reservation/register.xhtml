@@ -32,6 +32,14 @@
                     </p:inputText>
                     <p:message for="IC" display="icon"/>
 
+                    <p:outputLabel for="gender" value="Gender " />
+                    <p:selectOneMenu id ="gender" value="#{customerBean.gender}" required="true">
+                        <f:selectItem itemValue="-" itemLabel="-" noSelectionOption="true"/>
+                        <f:selectItem itemValue="Male" itemLabel="Male" />
+                        <f:selectItem itemValue="Female" itemLabel="Female" />
+                    </p:selectOneMenu>
+                    <p:message for="gender" display="icon"/>
+                    
                     <p:outputLabel for="phone" value="Phone: " />
                     <p:inputText id="phone" required="true" value="#{customerBean.phone}" > 
                         <f:validateRegex pattern="^([+]?[\d]{10,11}+)?$" />
@@ -54,8 +62,7 @@
                     <p:outputLabel for="age" value="Age: " />
                     <p:selectOneMenu id ="age" value="#{customerBean.age}" required="true">
                         <f:selectItem itemValue="-" itemLabel="Select age" noSelectionOption="true"/>
-                        <f:selectItems value="#{customerBean.ageList}"/>
-                        
+                        <f:selectItems value="#{customerBean.ageList}"/>   
                     </p:selectOneMenu>
                     <p:message for="age" display="icon"/>
 
