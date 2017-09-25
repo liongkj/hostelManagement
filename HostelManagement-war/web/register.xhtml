@@ -38,6 +38,15 @@
                     </p:inputText>
                     <p:message for="ICNo"/>
 
+                    <p:outputLabel for="gender" value="Gender " />
+                    <p:selectOneMenu id ="gender" value="#{accountBean.gender}" required="true">
+                        <f:selectItem itemValue="-" itemLabel="-" noSelectionOption="true"/>
+                        <f:selectItem itemValue="Male" itemLabel="Male" />
+                        <f:selectItem itemValue="Female" itemLabel="Female" />
+                        
+                    </p:selectOneMenu>
+                    <p:message for="gender" display="icon"/>
+                    
                     <p:outputLabel for="phone" value="Phone: " />
                     <p:inputText id="phone" required="true" value="#{accountBean.phoneNo}"> 
                         <f:validateLength  minimum="10" maximum="11" />

@@ -35,17 +35,17 @@ public class roomBean {
         rooms = roomFacade.findAll();
     }
 
-    public void addRoom() {
-        String level = "30";
-
-        for (int i = 1; i < 10; i++) {
-            String lbl = level + Integer.toString(i);
-            Room room = new Room(lbl, "Cleaned");
-            roomFacade.create(room);
-        }
-
-        System.out.println("Room added");
-    }
+//    public void addRoom() {
+//        String level = "30";
+//
+//        for (int i = 1; i < 10; i++) {
+//            String lbl = level + Integer.toString(i);
+//            Room room = new Room(lbl, "Cleaned");
+//            roomFacade.create(room);
+//        }
+//
+//        System.out.println("Room added");
+//    }
 
     public RoomFacade getRoomFacade() {
         return roomFacade;
