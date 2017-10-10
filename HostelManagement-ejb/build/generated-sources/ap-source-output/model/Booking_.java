@@ -8,7 +8,7 @@ import model.Guest;
 import model.Room;
 import model.Useracc;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-09-24T21:03:37")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2017-10-11T00:40:42")
 @StaticMetamodel(Booking.class)
 public class Booking_ { 
 
