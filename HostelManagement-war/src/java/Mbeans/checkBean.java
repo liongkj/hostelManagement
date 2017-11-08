@@ -42,14 +42,14 @@ public class checkBean {
 
     @EJB
     private RoomFacade roomFacade;
-    
+
     @EJB
     private BookingFacade bookingFacade;
-    
+
     private Guest checkInGuest;
     private List<Booking> bookings;
     private List<Booking> temp;
-    
+
     private String staffUser;
     private Useracc staff;
     private Room checkInRoom;
@@ -74,9 +74,9 @@ public class checkBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
                     "No Booking record found with this customer.", ""));
         }
-        
+
     }
-    
+
     public Boolean checkBookingCus(Guest cig) {
         Boolean found = false;
         List<Booking> book = new ArrayList();
@@ -105,38 +105,43 @@ public class checkBean {
         return found;
     }
 
-    public Boolean isTime(Booking book){
-       LocalDate checkIn = new java.sql.Date(book.getFirstNight().getTime()).toLocalDate();
-       return !(checkIn.compareTo(dt)==0);
+    public Boolean isTime(Booking book) {
+        boolean available = false;
+        LocalDate checkIn = new java.sql.Date(book.getFirstNight().getTime()).toLocalDate();
+        String status = book.getbRoom().getStatus();
+        if (checkIn.compareTo(dt) == 0 && status.startsWith("C")){
+            available = true;
+        }
+        return !(available);
     }
-    
-    public void confirmCheckIn(Booking book){
+
+    public void confirmCheckIn(Booking book) {
         setStaff(staffUser);
         setCheckInGuest(book.getbGuest());
         Payment p = new Payment(book, staff, checkInGuest);
-        System.out.println(book.getId()+ " checked In");
+        System.out.println(book.getId() + " checked In");
         bookingFacade.remove(book);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer is checked In.", ""));
         paymentFacade.create(p);
         updateRoomstatus(book);
-        
+
         init();
     }
-    
-    public void updateRoomstatus(Booking b){
+
+    public void updateRoomstatus(Booking b) {
         System.out.println("room status updated.");
         Long no = b.getbRoom().getId();
         List<Room> r = roomFacade.findAll();
-        for (Room room:r){
-            if(Objects.equals(room.getId(), no)){
+        for (Room room : r) {
+            if (Objects.equals(room.getId(), no)) {
                 checkInRoom = room;
             }
         }
-        
+
         checkInRoom.setStatus("Occupied");
         roomFacade.edit(checkInRoom);
     }
-    
+
     public void setStaff(String username) {
         List<Useracc> ul;
         ul = useraccFacade.findAll();
@@ -146,7 +151,7 @@ public class checkBean {
             }
         }
     }
-    
+
     public Booking getBooking() {
         return booking;
     }
@@ -191,7 +196,8 @@ public class checkBean {
      * Creates a new instance of checkBean
      */
     public checkBean() {
-        this.dt = LocalDate.parse("01/10/2017", dtf);
+//        this.dt = LocalDate.parse("01/10/2017", dtf);
+        this.dt = LocalDate.now();
     }
 
 }
